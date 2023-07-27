@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoisonBot", "PoisonBot\PoisonBot.csproj", "{3BCE8603-A386-444A-A565-0411FE5AE52C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3BCE8603-A386-444A-A565-0411FE5AE52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BCE8603-A386-444A-A565-0411FE5AE52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BCE8603-A386-444A-A565-0411FE5AE52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BCE8603-A386-444A-A565-0411FE5AE52C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF520BBF-737A-4528-86CB-CCA972CA8E17}
+	EndGlobalSection
+EndGlobal
