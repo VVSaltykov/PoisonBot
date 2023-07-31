@@ -1,0 +1,21 @@
+﻿version: '3.8'
+services:
+# Database
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Xsvv2002
+      - POSTGRES_DB=dewudb
+    ports:
+      - "5432:5432"
+
+# Database adminer
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "5000:8080"

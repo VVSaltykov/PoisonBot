@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "PoisonBot": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

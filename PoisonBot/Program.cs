@@ -1,4 +1,7 @@
-﻿using PoisonBot.Handlers;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using PoisonBot.Handlers;
 using PoisonBot.Messages;
 using PoisonBot.Services;
 using PoisonBot.UI;
@@ -26,7 +29,7 @@ namespace PoisonBot
                 };
                 client.OnCallbackQuery += async (sender, e) =>
                 {
-                    OnCallbackQueryHandler.OnCallbackQweryHandlerAsync(sender, e, client);
+                    OnCallbackQueryHandler.OnCallbackQueryHandlerAsync(sender, e, client);
                 };
                 Console.ReadLine();
                 client.StopReceiving();

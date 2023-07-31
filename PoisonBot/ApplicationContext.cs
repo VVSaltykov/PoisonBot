@@ -1,23 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PoisonBot.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PoisonBot
 {
-    public class ApplicationContext: DbContext
+    public class ApplicationContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Sneakers> Sneakers { get; set;}
+        public DbSet<Sneakers> Sneakers { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options)
-            : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=dewudb;Username=postgres;Password=Xsvv2002");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Sneakers>()
+                        .HasOne(s => s.User)
+                        .WithMany(u => u.Sneakers)
+                        .HasForeignKey(s => s.UserId);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PoisonBot.Messages;
+﻿using Microsoft.EntityFrameworkCore;
+using PoisonBot.Messages;
 using PoisonBot.Services;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,8 @@ namespace PoisonBot.Handlers
 {
     public class OnCallbackQueryHandler
     {
-        public static async void OnCallbackQweryHandlerAsync(object sender, CallbackQueryEventArgs e, TelegramBotClient client)
+        public static async void OnCallbackQueryHandlerAsync(object sender, CallbackQueryEventArgs e,
+            TelegramBotClient client)
         {
             string callbackMessage = e.CallbackQuery.Data;
             var message = e.CallbackQuery.Message;
