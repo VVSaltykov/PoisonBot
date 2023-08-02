@@ -15,9 +15,8 @@ namespace PoisonBot
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Sneakers>()
-                        .HasOne(s => s.User)
-                        .WithMany(u => u.Sneakers)
-                        .HasForeignKey(s => s.UserId);
+                        .HasMany(s => s.Users)
+                        .WithMany(u => u.Sneakers);
         }
     }
 }

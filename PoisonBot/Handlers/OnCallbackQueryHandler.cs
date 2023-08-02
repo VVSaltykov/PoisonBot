@@ -19,12 +19,11 @@ namespace PoisonBot.Handlers
             string callbackMessage = e.CallbackQuery.Data;
             var message = e.CallbackQuery.Message;
             long chatId = e.CallbackQuery.Message.Chat.Id;
-            SneakersService sneakersService = new SneakersService();
 
             if (e.CallbackQuery.Data == "Find")
             {
                 await client.EditMessageTextAsync(chatId, message.MessageId, SneakersMessages.ChoosingSneakers);
-                await sneakersService.ChoosingSneakers();
+                await SneakersService.ChoosingSneakers(chatId, client);
             }
         }
     }

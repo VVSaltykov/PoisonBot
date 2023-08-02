@@ -22,15 +22,18 @@ namespace PoisonBot.Handlers
         {
             var message = e.Message;
             long chatId = e.Message.Chat.Id;
+            bool showButton = false;
 
             if (message.Text == "/start")
             {
-                await UserService.StartRegistrationAsync(message.Chat.Id, client, e);
+                showButton = true;
+                await UserService.StartRegistrationAsync(message.Chat.Id, client, e, showButton);
             }
             else if (message.Type == MessageType.Contact)
             {
                 await UserRepository.AddUserAsync(chatId, e.Message.Contact.PhoneNumber);
-                await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!");
+                await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!", replyMarkup: Buttons.StartMenuRegistered());
+                showButton = false;
             }
             Console.WriteLine($"{message.Text}");
         }

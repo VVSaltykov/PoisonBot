@@ -11,7 +11,6 @@ namespace PoisonBot.Repositories
 {
     public class UserRepository
     {
-
         public static async Task<bool> UserIsRegisteredAsync(long chatId)
         {
             try
@@ -35,7 +34,6 @@ namespace PoisonBot.Repositories
                 };
                 if (applicationContext.Users.Where(u => u.ChatId == user.ChatId).Any())
                 {
-                    throw new AlreadyContainException();
                 }
                 else
                 {
@@ -53,7 +51,22 @@ namespace PoisonBot.Repositories
                 {
                     throw new NotFoundException();
                 }
-                await applicationContext.Sneakers.Include(s => s.UserId).ToListAsync();
+                if(!(await applicationContext.Sneakers.Include(s => s.Users).AnyAsync()))
+                {
+                    return user;
+                }
+                return user;
+            }
+        }
+        public static async Task<User> GetUserByIdAsync(int Id)
+        {
+            using (ApplicationContext applicationContext = new ApplicationContext())
+            {
+                var user = await applicationContext.Users.FirstOrDefaultAsync(u => u.Id == Id);
+                if (user == null)
+                {
+                    throw new NotFoundException();
+                }
                 return user;
             }
         }

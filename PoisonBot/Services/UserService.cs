@@ -8,7 +8,7 @@ namespace PoisonBot.Services
     public class UserService
     {
         public async static Task StartRegistrationAsync(long chatId, TelegramBotClient client,
-            MessageEventArgs e)
+            MessageEventArgs e, bool showButton)
         {
             var replyMarkup = new ReplyKeyboardMarkup(new[]
             {
@@ -20,7 +20,10 @@ namespace PoisonBot.Services
                 }
             }
             });
-            await client.SendTextMessageAsync(chatId, "Добро пожаловать! Нажмите на кнопку, чтобы отправить свой номер телефона:", replyMarkup: replyMarkup);
+            if (showButton)
+            {
+                await client.SendTextMessageAsync(chatId, "Добро пожаловать! Нажмите на кнопку, чтобы отправить свой номер телефона:", replyMarkup: replyMarkup);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PoisonBot;
@@ -11,9 +12,11 @@ using PoisonBot;
 namespace PoisonBot.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230802140537_anotherupdatesneakersmodel")]
+    partial class anotherupdatesneakersmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +50,8 @@ namespace PoisonBot.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Sneakers");
                 });
 
@@ -73,34 +78,18 @@ namespace PoisonBot.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SneakersUser", b =>
+            modelBuilder.Entity("PoisonBot.Models.Sneakers", b =>
                 {
-                    b.Property<int>("SneakersId")
-                        .HasColumnType("integer");
+                    b.HasOne("PoisonBot.Models.User", "User")
+                        .WithMany("Sneakers")
+                        .HasForeignKey("UserId");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("SneakersId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("SneakersUser");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SneakersUser", b =>
+            modelBuilder.Entity("PoisonBot.Models.User", b =>
                 {
-                    b.HasOne("PoisonBot.Models.Sneakers", null)
-                        .WithMany()
-                        .HasForeignKey("SneakersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PoisonBot.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Sneakers");
                 });
 #pragma warning restore 612, 618
         }
