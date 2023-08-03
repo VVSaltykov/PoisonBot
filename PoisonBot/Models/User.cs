@@ -13,6 +13,6 @@ namespace PoisonBot.Models
         public long ChatId { get; set; }
         public string PhoneNumber { get; set; }
         public Role Role { get; set; } = Role.User;
-        public List<Sneakers>? Sneakers { get; set; }
+        public List<Sneakers>? Sneakers { get; set; } = new List<Sneakers>();
     }
 }

@@ -14,7 +14,7 @@ namespace PoisonBot.Models
         public string Name { get; set; }
         public string Cost { get; set; }
         public string Size { get; set; }
-        public int? UserId { get; set; }
-        public List<User>? Users { get; set; }
+        public int UserId { get; set; }
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

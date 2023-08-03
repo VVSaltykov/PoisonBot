@@ -22,10 +22,10 @@ namespace PoisonBot.Repositories
                     Size = size,
                     UserId = user.Id,
                 };
-                sneakers.Users?.Add(user);
                 applicationContext.Sneakers.Add(sneakers);
                 await applicationContext.SaveChangesAsync();
                 user.Sneakers?.Add(sneakers);
+                sneakers.Users.Add(user);
                 await applicationContext.SaveChangesAsync();
             }
         }

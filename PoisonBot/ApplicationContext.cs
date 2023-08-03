@@ -17,6 +17,9 @@ namespace PoisonBot
             modelBuilder.Entity<Sneakers>()
                         .HasMany(s => s.Users)
                         .WithMany(u => u.Sneakers);
+            modelBuilder.Entity<User>()
+                        .HasMany(u => u.Sneakers)
+                        .WithMany(s => s.Users);
         }
     }
 }
