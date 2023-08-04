@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PoisonBot.Messages;
+using PoisonBot.Repositories;
 using PoisonBot.Services;
 using PoisonBot.UI;
 using System;
@@ -34,6 +35,18 @@ namespace PoisonBot.Handlers
             if (e.CallbackQuery.Data == "InMenu")
             {
                 await client.EditMessageTextAsync(chatId, message.MessageId, "Что хотите заказать сегодня?", replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.StartMenu());
+            }
+            if (e.CallbackQuery.Data == "PlaceOrder")
+            {
+                await UserService.PlaceUserOrder(chatId, client, e);
+            }
+            if (e.CallbackQuery.Data == "First")
+            {
+                await DeliveryService.FirstTypeOrder(chatId, client, e);
+            }
+            if (e.CallbackQuery.Data == "Second")
+            {
+                await DeliveryService.SecondTypeOrder(chatId, client, e);
             }
         }
     }

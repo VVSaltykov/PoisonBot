@@ -36,5 +36,36 @@ namespace PoisonBot.UI
             });
             ;
         }
+        public static IReplyMarkup PlaceUserOrderMenu()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "1 способ", callbackData: "First"),
+                        InlineKeyboardButton.WithCallbackData(text: "2 способ", callbackData: "Second"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup AfterOrderMenu()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Менеджер", callbackData: "Manadger"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
     }
 }

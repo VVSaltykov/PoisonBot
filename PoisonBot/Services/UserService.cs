@@ -36,7 +36,17 @@ namespace PoisonBot.Services
             {
                 telegramMessage += $"Название заказа: {sneaker.Name}, Цена: {sneaker.Cost}, Размер: {sneaker.Size} \n";
             }
-            await client.EditMessageTextAsync(chatId, message.MessageId, telegramMessage, replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
+            await client.EditMessageTextAsync(chatId, message.MessageId, telegramMessage,
+                replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
+        }
+        public static async Task PlaceUserOrder(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
+        {
+            var message = e.CallbackQuery.Message;
+            await client.EditMessageTextAsync(chatId, message.MessageId,
+                "70 юань/кг\r\n125 юань/кг\r\nЕсли кроссы лоу версии то коробка одна весит ~1,577 кг ; " +
+                "High версия ~1,98 кг\r\n\r\n8~10% -зависит от розницы или опта , если брать от 4 позиций то комиссия 8% ," +
+                " меньше 10%\r\nС-курс цб +2% конвертации",
+                replyMarkup: (InlineKeyboardMarkup)Buttons.PlaceUserOrderMenu());
         }
     }
 }

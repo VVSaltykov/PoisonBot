@@ -1,4 +1,5 @@
-﻿using PoisonBot.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PoisonBot.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace PoisonBot.Repositories
         {
             using (ApplicationContext applicationContext = new ApplicationContext())
             {
-                var user = await UserRepository.GetUserByChatIdAsync(chatId);
+                var user = await applicationContext.Users.FirstOrDefaultAsync(u => u.ChatId == chatId);
                 Sneakers sneakers = new Sneakers
                 {
                     Name = name,
