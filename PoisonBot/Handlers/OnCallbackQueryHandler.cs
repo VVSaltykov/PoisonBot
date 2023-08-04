@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PoisonBot.Messages;
 using PoisonBot.Services;
+using PoisonBot.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,19 @@ namespace PoisonBot.Handlers
             var message = e.CallbackQuery.Message;
             long chatId = e.CallbackQuery.Message.Chat.Id;
 
-            if (e.CallbackQuery.Data == "Find")
+            if (e.CallbackQuery.Data == "Order")
             {
                 await client.EditMessageTextAsync(chatId, message.MessageId, SneakersMessages.ChoosingSneakers);
                 await SneakersService.ChoosingSneakers(chatId, client);
+                await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
+            }
+            if (e.CallbackQuery.Data == "Cart")
+            {
+                await UserService.UserCart(chatId, client, e);
+            }
+            if (e.CallbackQuery.Data == "InMenu")
+            {
+                await client.EditMessageTextAsync(chatId, message.MessageId, "Что хотите заказать сегодня?", replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.StartMenu());
             }
         }
     }

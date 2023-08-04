@@ -9,29 +9,30 @@ namespace PoisonBot.UI
 {
     public class Buttons
     {
-        public static IReplyMarkup StartMenuNotRegistered()
+        public static IReplyMarkup StartMenu()
         {
             return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
             {
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "Найти кроссовки", callbackData: "Find"),
-                    },
-                    new List<InlineKeyboardButton>
-                    {
-                        InlineKeyboardButton.WithCallbackData(text: "Зарегистрироваться", callbackData: "Registration"),
+                        InlineKeyboardButton.WithCallbackData(text: "Сделать заказ", callbackData: "Order"),
+                        InlineKeyboardButton.WithCallbackData(text: "Корзина", callbackData: "Cart"),
                     },
             });
             ;
         }
-        public static IReplyMarkup StartMenuRegistered()
+        public static IReplyMarkup CartMenu()
         {
             return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
             {
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "Найти кроссовки", callbackData: "Find"),
+                        InlineKeyboardButton.WithCallbackData(text: "Офрмить заказ", callbackData: "PlaceOrder"),
                     },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
             });
             ;
         }

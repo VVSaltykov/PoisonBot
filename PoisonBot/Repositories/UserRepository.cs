@@ -51,8 +51,9 @@ namespace PoisonBot.Repositories
                 {
                     throw new NotFoundException();
                 }
-                if(!(await applicationContext.Sneakers.Include(s => s.Users).AnyAsync()))
+                if(await applicationContext.Sneakers.Include(s => s.Users).AnyAsync())
                 {
+                    await applicationContext.Sneakers.Include(s => s.Users).ToListAsync();
                     return user;
                 }
                 return user;
@@ -68,6 +69,15 @@ namespace PoisonBot.Repositories
                     throw new NotFoundException();
                 }
                 return user;
+            }
+        }
+        public static async Task<List<Sneakers>?> GetUserCart(long chatId)
+        {
+            using (ApplicationContext applicationContext = new ApplicationContext())
+            {
+                var user = await GetUserByChatIdAsync(chatId);
+                List<Sneakers>? sneakers = user.Sneakers.ToList();
+                return sneakers;
             }
         }
     }
