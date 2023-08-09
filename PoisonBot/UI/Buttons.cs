@@ -18,6 +18,10 @@ namespace PoisonBot.UI
                         InlineKeyboardButton.WithCallbackData(text: "Сделать заказ", callbackData: "Order"),
                         InlineKeyboardButton.WithCallbackData(text: "Корзина", callbackData: "Cart"),
                     },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "История заказов", callbackData: "OrderHistory"),
+                    },
             });
             ;
         }
@@ -27,8 +31,19 @@ namespace PoisonBot.UI
             {
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "Офрмить заказ", callbackData: "PlaceOrder"),
+                        InlineKeyboardButton.WithCallbackData(text: "Оформить заказ", callbackData: "PlaceOrder"),
                     },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup DeliveryHistoryMenu()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
@@ -58,7 +73,11 @@ namespace PoisonBot.UI
             {
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "Менеджер", callbackData: "Manadger"),
+                        InlineKeyboardButton.WithCallbackData(text: "Менеджер", callbackData: "Manager"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Продолжить покупки", callbackData: "Order"),
                     },
                     new List<InlineKeyboardButton>
                     {

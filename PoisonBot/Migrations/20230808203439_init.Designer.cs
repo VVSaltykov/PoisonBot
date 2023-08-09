@@ -12,8 +12,8 @@ using PoisonBot;
 namespace PoisonBot.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230802142358_updatemodels")]
-    partial class updatemodels
+    [Migration("20230808203439_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace PoisonBot.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PoisonBot.Models.Sneakers", b =>
+            modelBuilder.Entity("PoisonBot.Models.Delivery", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,14 +41,45 @@ namespace PoisonBot.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Deliveries");
+                });
+
+            modelBuilder.Entity("PoisonBot.Models.Sneakers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Cost")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("DeliveryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Size")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeliveryId");
 
                     b.ToTable("Sneakers");
                 });
@@ -63,6 +94,9 @@ namespace PoisonBot.Migrations
 
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");
+
+                    b.Property<int?>("DeliveryId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -88,7 +122,25 @@ namespace PoisonBot.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("SneakersUser");
+                    b.ToTable("UserSneakers", (string)null);
+                });
+
+            modelBuilder.Entity("PoisonBot.Models.Delivery", b =>
+                {
+                    b.HasOne("PoisonBot.Models.User", "User")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PoisonBot.Models.Sneakers", b =>
+                {
+                    b.HasOne("PoisonBot.Models.Delivery", null)
+                        .WithMany("Sneakers")
+                        .HasForeignKey("DeliveryId");
                 });
 
             modelBuilder.Entity("SneakersUser", b =>
@@ -104,6 +156,16 @@ namespace PoisonBot.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PoisonBot.Models.Delivery", b =>
+                {
+                    b.Navigation("Sneakers");
+                });
+
+            modelBuilder.Entity("PoisonBot.Models.User", b =>
+                {
+                    b.Navigation("Deliveries");
                 });
 #pragma warning restore 612, 618
         }

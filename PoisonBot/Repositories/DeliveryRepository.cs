@@ -1,4 +1,6 @@
-﻿using PoisonBot.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PoisonBot.Exceptions;
+using PoisonBot.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,40 @@ namespace PoisonBot.Repositories
 {
     public class DeliveryRepository
     {
+        public static async Task<Delivery> AddDelivery(User user, decimal cost)
+        {
+            try
+            {
+                int i = 1;
+                using (ApplicationContext applicationContext = new ApplicationContext())
+                {
+                    Delivery delivery = new Delivery
+                    {
+                        Name = Convert.ToString(i++),
+                        Cost = Convert.ToString(cost),
+                        UserID = user.Id
+                    };
+                    delivery.Sneakers = user.Sneakers.ToList();
+                    applicationContext.Deliveries.Add(delivery);
+                    await applicationContext.SaveChangesAsync();
+                    user.Deliveries.Add(delivery);
+                    user.DeliveryId = delivery.Id;
+                    await applicationContext.SaveChangesAsync();
+                    return delivery;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException?.Message);
+                return null;
+            }
+        }
+        public static async Task<List<Delivery>?> GetUserDeliviries(User user)
+        {
+            List<Delivery>? deliveries = user.Deliveries.ToList();
+            return deliveries;
+        }
         public static async Task<decimal> FirstTypeOrderFormula(long chatId)
         {
             decimal costSum = 0;
@@ -81,7 +117,7 @@ namespace PoisonBot.Repositories
                 var endIndex = content.IndexOf("</Value>", startIndex) + "</Value>".Length;
                 var rateString = content.Substring(startIndex, endIndex - startIndex);
                 var rate = GetRateFromXml(rateString);
-
+                httpClient.Dispose();
                 return rate;
             }
         }

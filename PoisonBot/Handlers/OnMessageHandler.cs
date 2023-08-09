@@ -23,26 +23,33 @@ namespace PoisonBot.Handlers
             var message = e.Message;
             long chatId = e.Message.Chat.Id;
             bool showButton = false;
+            try
+            {
 
-            if (message.Text == "/start")
-            {
-                if(await UserRepository.UserIsRegisteredAsync(chatId))
+                if (message.Text == "/start")
                 {
-                    await client.SendTextMessageAsync(message.Chat.Id, "Что хотите заказать сегодня?", replyMarkup: Buttons.StartMenu());
+                    if (await UserRepository.UserIsRegisteredAsync(chatId))
+                    {
+                        await client.SendTextMessageAsync(message.Chat.Id, "Что хотите заказать сегодня?", replyMarkup: Buttons.StartMenu());
+                    }
+                    else
+                    {
+                        showButton = true;
+                        await UserService.StartRegistrationAsync(message.Chat.Id, client, e, showButton);
+                    }
                 }
-                else
+                else if (message.Type == MessageType.Contact)
                 {
-                    showButton = true;
-                    await UserService.StartRegistrationAsync(message.Chat.Id, client, e, showButton);
+                    await UserRepository.AddUserAsync(chatId, e.Message.Contact.PhoneNumber);
+                    await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!", replyMarkup: Buttons.StartMenu());
+                    showButton = false;
                 }
             }
-            else if (message.Type == MessageType.Contact)
+            catch
             {
-                await UserRepository.AddUserAsync(chatId, e.Message.Contact.PhoneNumber);
-                await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!", replyMarkup: Buttons.StartMenu());
-                showButton = false;
+                await client.SendTextMessageAsync(chatId, "Сервер перегружен");
             }
-            Console.WriteLine($"{message.Text}");
+            Console.WriteLine($"Пользователь: {chatId} отправил сообщение: {message.Text}");
         }
     }
 }

@@ -21,33 +21,45 @@ namespace PoisonBot.Handlers
             string callbackMessage = e.CallbackQuery.Data;
             var message = e.CallbackQuery.Message;
             long chatId = e.CallbackQuery.Message.Chat.Id;
+            try
+            {
+                if (e.CallbackQuery.Data == "Order")
+                {
+                    await client.EditMessageTextAsync(chatId, message.MessageId, "Введите название кроссовок:");
+                    await SneakersService.ChoosingSneakers(chatId, client);
+                    await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
+                }
+                if (e.CallbackQuery.Data == "Cart")
+                {
+                    await UserService.UserCart(chatId, client, e);
+                }
+                if (e.CallbackQuery.Data == "InMenu")
+                {
+                    await client.EditMessageTextAsync(chatId, message.MessageId, "Что хотите заказать сегодня?", replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.StartMenu());
+                }
+                if (e.CallbackQuery.Data == "PlaceOrder")
+                {
+                    await UserService.PlaceUserOrder(chatId, client, e);
+                }
+                if (e.CallbackQuery.Data == "First")
+                {
+                    await DeliveryService.FirstTypeOrder(chatId, client, e);
+                }
+                if (e.CallbackQuery.Data == "Second")
+                {
+                    await DeliveryService.SecondTypeOrder(chatId, client, e);
+                }
+                if (e.CallbackQuery.Data == "OrderHistory")
+                {
+                    await DeliveryService.DeliveryHistory(chatId, client, e);
+                }
 
-            if (e.CallbackQuery.Data == "Order")
-            {
-                await client.EditMessageTextAsync(chatId, message.MessageId, SneakersMessages.ChoosingSneakers);
-                await SneakersService.ChoosingSneakers(chatId, client);
-                await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
             }
-            if (e.CallbackQuery.Data == "Cart")
+            catch
             {
-                await UserService.UserCart(chatId, client, e);
+                await client.SendTextMessageAsync(chatId, "Сервер перегружен");
             }
-            if (e.CallbackQuery.Data == "InMenu")
-            {
-                await client.EditMessageTextAsync(chatId, message.MessageId, "Что хотите заказать сегодня?", replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.StartMenu());
-            }
-            if (e.CallbackQuery.Data == "PlaceOrder")
-            {
-                await UserService.PlaceUserOrder(chatId, client, e);
-            }
-            if (e.CallbackQuery.Data == "First")
-            {
-                await DeliveryService.FirstTypeOrder(chatId, client, e);
-            }
-            if (e.CallbackQuery.Data == "Second")
-            {
-                await DeliveryService.SecondTypeOrder(chatId, client, e);
-            }
+            Console.WriteLine($"Пользователь: {chatId} отправил сообщение: {callbackMessage}");
         }
     }
 }

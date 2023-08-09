@@ -17,8 +17,6 @@ namespace PoisonBot.Services
         public static string currentCost = "";
         public static string currentSize = "";
         private static MessageEventArgs e;
-        private static SemaphoreSlim userMessageSemaphore = new SemaphoreSlim(0);
-        private static string userMessage = "";
         public static async Task ChoosingSneakers(long chatId, TelegramBotClient client)
         {
             int currentState = 0;
@@ -27,20 +25,19 @@ namespace PoisonBot.Services
                 switch (currentState)
                 {
                     case 0:
-                        await client.SendTextMessageAsync(chatId, "Введите название кроссовок:");
-                        e = await WaitForUserMessage(client);
+                        e = await WaitForUserMessage(client, chatId);
                         currentName = e.Message.Text;
                         currentState = 1;
                         break;
                     case 1:
                         await client.SendTextMessageAsync(chatId, "Введите стоимость кроссовок:");
-                        e = await WaitForUserMessage(client);
+                        e = await WaitForUserMessage(client, chatId);
                         currentCost = e.Message.Text;
                         currentState = 2;
                         break;
                     case 2:
                         await client.SendTextMessageAsync(chatId, "Введите размер кроссовок:");
-                        e = await WaitForUserMessage(client);
+                        e = await WaitForUserMessage(client, chatId);
                         currentSize = e.Message.Text;
                         currentState = 3;
                         break;
@@ -50,14 +47,17 @@ namespace PoisonBot.Services
                 }
             }
         }
-        private static Task<MessageEventArgs> WaitForUserMessage(TelegramBotClient client)
+        private static Task<MessageEventArgs> WaitForUserMessage(TelegramBotClient client, long chatId)
         {
             var tcs = new TaskCompletionSource<MessageEventArgs>();
 
             void MessageReceived(object sender, MessageEventArgs e)
             {
-                client.OnMessage -= MessageReceived;
-                tcs.SetResult(e);
+                if (e.Message.Chat.Id == chatId)
+                {
+                    client.OnMessage -= MessageReceived;
+                    tcs.SetResult(e);
+                }
             }
 
             client.OnMessage += MessageReceived;

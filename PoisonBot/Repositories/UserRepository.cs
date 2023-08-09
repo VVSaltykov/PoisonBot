@@ -54,8 +54,10 @@ namespace PoisonBot.Repositories
                 if(await applicationContext.Sneakers.Include(s => s.Users).AnyAsync())
                 {
                     await applicationContext.Sneakers.Include(s => s.Users).ToListAsync();
+                    await applicationContext.Deliveries.Include(s => s.User).ToListAsync();
                     return user;
                 }
+                await applicationContext.Deliveries.Include(s => s.User).ToListAsync();
                 return user;
             }
         }

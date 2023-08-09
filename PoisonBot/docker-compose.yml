@@ -8,7 +8,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=Xsvv2002
-      - POSTGRES_DB=dewudb
+      - POSTGRES_DB=test1db
     ports:
       - "5432:5432"
 
