@@ -21,6 +21,7 @@ namespace PoisonBot.Handlers
             string callbackMessage = e.CallbackQuery.Data;
             var message = e.CallbackQuery.Message;
             long chatId = e.CallbackQuery.Message.Chat.Id;
+            var user = await UserRepository.GetUserByChatIdAsync(chatId);
             try
             {
                 if (e.CallbackQuery.Data == "Order")
@@ -39,7 +40,15 @@ namespace PoisonBot.Handlers
                 }
                 if (e.CallbackQuery.Data == "PlaceOrder")
                 {
-                    await UserService.PlaceUserOrder(chatId, client, e);
+                    var delivery = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).FirstOrDefault();
+                    if (delivery != null)
+                    {
+                        await DeliveryService.UserDelivery(chatId, client, e);
+                    }
+                    else
+                    {
+                        await UserService.PlaceUserOrder(chatId, client, e);
+                    }
                 }
                 if (e.CallbackQuery.Data == "First")
                 {
@@ -48,6 +57,12 @@ namespace PoisonBot.Handlers
                 if (e.CallbackQuery.Data == "Second")
                 {
                     await DeliveryService.SecondTypeOrder(chatId, client, e);
+                }
+                if (e.CallbackQuery.Data == "NextOrder")
+                {
+                    await client.EditMessageTextAsync(chatId, message.MessageId, "Введите название кроссовок:");
+                    await SneakersService.ChoosingSneakers(chatId, client);
+                    await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
                 }
                 if (e.CallbackQuery.Data == "OrderHistory")
                 {

@@ -51,13 +51,13 @@ namespace PoisonBot.Repositories
                 {
                     throw new NotFoundException();
                 }
-                if(await applicationContext.Sneakers.Include(s => s.Users).AnyAsync())
+                if(await applicationContext.Sneakers.Include(s => s.Users).AnyAsync()
+                    || await applicationContext.Deliveries.Include(d => d.User).AnyAsync())
                 {
                     await applicationContext.Sneakers.Include(s => s.Users).ToListAsync();
                     await applicationContext.Deliveries.Include(s => s.User).ToListAsync();
                     return user;
                 }
-                await applicationContext.Deliveries.Include(s => s.User).ToListAsync();
                 return user;
             }
         }

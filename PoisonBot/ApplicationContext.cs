@@ -27,11 +27,16 @@ namespace PoisonBot
                         .UsingEntity(j => j.ToTable("UserSneakers"));
             modelBuilder.Entity<User>()
                         .HasMany(u => u.Deliveries)
-                        .WithOne(d => d.User);
+                        .WithOne(d => d.User)
+                        .HasForeignKey(d => d.UserID);
 
             modelBuilder.Entity<Delivery>()
                         .HasOne(d => d.User)
-                        .WithMany(u => u.Deliveries);
+                        .WithMany(u => u.Deliveries)
+                        .HasForeignKey(d => d.UserID);
+            modelBuilder.Entity<Delivery>()
+                        .HasMany(d => d.Sneakers)
+                        .WithOne(s => s.Delivery);
         }
     }
 }

@@ -77,7 +77,7 @@ namespace PoisonBot.UI
                     },
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "Продолжить покупки", callbackData: "Order"),
+                        InlineKeyboardButton.WithCallbackData(text: "Продолжить покупки", callbackData: "NextOrder"),
                     },
                     new List<InlineKeyboardButton>
                     {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PoisonBot;
@@ -11,9 +12,11 @@ using PoisonBot;
 namespace PoisonBot.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230812210928_anotherupdatedb")]
+    partial class anotherupdatedb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,9 +69,6 @@ namespace PoisonBot.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("DeliveryId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -81,8 +81,6 @@ namespace PoisonBot.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeliveryId");
 
                     b.ToTable("Sneakers");
                 });
@@ -139,15 +137,6 @@ namespace PoisonBot.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PoisonBot.Models.Sneakers", b =>
-                {
-                    b.HasOne("PoisonBot.Models.Delivery", "Delivery")
-                        .WithMany("Sneakers")
-                        .HasForeignKey("DeliveryId");
-
-                    b.Navigation("Delivery");
-                });
-
             modelBuilder.Entity("SneakersUser", b =>
                 {
                     b.HasOne("PoisonBot.Models.Sneakers", null)
@@ -161,11 +150,6 @@ namespace PoisonBot.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PoisonBot.Models.Delivery", b =>
-                {
-                    b.Navigation("Sneakers");
                 });
 
             modelBuilder.Entity("PoisonBot.Models.User", b =>

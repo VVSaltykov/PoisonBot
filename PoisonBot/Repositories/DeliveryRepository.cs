@@ -1,27 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PoisonBot.Exceptions;
 using PoisonBot.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PoisonBot.Repositories
 {
     public class DeliveryRepository
     {
-        public static async Task<Delivery> AddDelivery(User user, decimal cost)
+        public static async Task<Delivery> AddDelivery(long chatId, decimal cost, int orderType)
         {
             try
             {
                 int i = 1;
                 using (ApplicationContext applicationContext = new ApplicationContext())
                 {
+                    var user = await applicationContext.Users.FirstOrDefaultAsync(u => u.ChatId == chatId);
+                    await applicationContext.Sneakers.Include(s => s.Users).ToListAsync();
                     Delivery delivery = new Delivery
                     {
                         Name = Convert.ToString(i++),
                         Cost = Convert.ToString(cost),
+                        TypeOrder = orderType,
                         UserID = user.Id
                     };
                     delivery.Sneakers = user.Sneakers.ToList();
@@ -40,10 +38,121 @@ namespace PoisonBot.Repositories
                 return null;
             }
         }
+        public static async Task<Delivery?> GetDeliveryAsync(User? user)
+        {
+            using (ApplicationContext applicationContext = new ApplicationContext())
+            {
+                var delivery = await applicationContext.Deliveries.Include(d => d.Sneakers).FirstOrDefaultAsync(d => d.User == user);
+                return delivery;
+            }
+        }
+        public static async Task AddSneakersToDelivery(long chatId)
+        {
+            using (ApplicationContext applicationContext = new ApplicationContext())
+            {
+                var user = await UserRepository.GetUserByChatIdAsync(chatId);
+                var delivery = await applicationContext.Deliveries.Include(d => d.Sneakers).FirstOrDefaultAsync(d => d.User == user);
+                var newSneakers = user.Sneakers.Where(s => !delivery.Sneakers.Any(d => d.Id == s.Id)).ToList();
+                delivery.Sneakers.AddRange(newSneakers);
+                await applicationContext.SaveChangesAsync();
+            }
+        }
+        public static async Task SelectOrderTypeToDelivery(long chatId)
+        {
+            using (ApplicationContext applicationContext = new ApplicationContext())
+            {
+                var user = await UserRepository.GetUserByChatIdAsync(chatId);
+                var delivery = await applicationContext.Deliveries.Include(d => d.Sneakers).FirstOrDefaultAsync(d => d.User == user);
+                if (delivery.TypeOrder == 1)
+                {
+                    await FirstTypeOrderFormulaForTheLastOrder(user.ChatId, delivery);
+                    await applicationContext.SaveChangesAsync();
+                }
+                if (delivery.TypeOrder == 2)
+                {
+                    await SecondTypeOrderFormulaForTheLastOrder(user.ChatId, delivery);
+                    await applicationContext.SaveChangesAsync();
+                }
+            }
+        }
         public static async Task<List<Delivery>?> GetUserDeliviries(User user)
         {
             List<Delivery>? deliveries = user.Deliveries.ToList();
             return deliveries;
+        }
+        public static async Task FirstTypeOrderFormulaForTheLastOrder(long chatId, Delivery delivery)
+        {
+            using (ApplicationContext applicationContext = new ApplicationContext())
+            {
+                decimal costSum = 0;
+                decimal deliveryCost = 70;
+                var user = await UserRepository.GetUserByChatIdAsync(chatId);
+                var item = user.Sneakers.Last();
+                if (item.Name.Contains("Low") || item.Name.Contains("low"))
+                {
+                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
+                }
+                else if (item.Name.Contains("High") || item.Name.Contains("high"))
+                {
+                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.98);
+                }
+                else
+                {
+                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
+                }
+                decimal cost = Convert.ToDecimal(delivery.Cost);
+                cost += costSum;
+                if (delivery.Sneakers.Count >= 4)
+                {
+                    cost = (cost + (decimal)0.08 * cost) * GetCNY();
+                    delivery.Cost = Convert.ToString(cost);
+                    await applicationContext.SaveChangesAsync();
+                }
+                else
+                {
+                    cost = (cost + (decimal)0.1 * cost) * GetCNY();
+                    delivery.Cost = Convert.ToString(cost);
+                    await applicationContext.SaveChangesAsync();
+                }
+            }
+
+        }
+        public static async Task SecondTypeOrderFormulaForTheLastOrder(long chatId, Delivery delivery)
+        {
+            using (ApplicationContext applicationContext = new ApplicationContext())
+            {
+                decimal costSum = 0;
+                decimal deliveryCost = 125;
+                await applicationContext.Sneakers.Include(s => s.Users).ToListAsync();
+                var user = await UserRepository.GetUserByChatIdAsync(chatId);
+                var item = user.Sneakers.Last();
+                if (item.Name.Contains("Low") || item.Name.Contains("low"))
+                {
+                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
+                }
+                else if (item.Name.Contains("High") || item.Name.Contains("high"))
+                {
+                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.98);
+                }
+                else
+                {
+                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
+                }
+                decimal cost = Convert.ToDecimal(delivery.Cost);
+                cost += costSum;
+                if (delivery.Sneakers.Count >= 4)
+                {
+                    cost = (cost + (decimal)0.08 * cost) * GetCNY();
+                    delivery.Cost = Convert.ToString(cost);
+                    await applicationContext.SaveChangesAsync();
+                }
+                else
+                {
+                    cost = (cost + (decimal)0.1 * cost) * GetCNY();
+                    delivery.Cost = Convert.ToString(cost);
+                    await applicationContext.SaveChangesAsync();
+                }
+            }
         }
         public static async Task<decimal> FirstTypeOrderFormula(long chatId)
         {
@@ -67,7 +176,7 @@ namespace PoisonBot.Repositories
             }
             if (user.Sneakers.Count >= 4)
             {
-                costSum = (costSum + (decimal)0.08 * costSum) * GetCNY(); 
+                costSum = (costSum + (decimal)0.08 * costSum) * GetCNY();
             }
             else
             {

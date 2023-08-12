@@ -20,6 +20,7 @@ namespace PoisonBot.Services
         public static async Task ChoosingSneakers(long chatId, TelegramBotClient client)
         {
             int currentState = 0;
+            var user = await UserRepository.GetUserByChatIdAsync(chatId);
             while (currentState <= 3)
             {
                 switch (currentState)
@@ -43,7 +44,17 @@ namespace PoisonBot.Services
                         break;
                     case 3:
                         await SneakersRepository.AddSneakers(currentName, currentCost, currentSize, chatId);
-                        return;
+                        var delivery = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).FirstOrDefault();
+                        if (delivery != null)
+                        {
+                            await DeliveryRepository.AddSneakersToDelivery(chatId);
+                            await DeliveryRepository.SelectOrderTypeToDelivery(chatId);
+                            return;
+                        }
+                        else
+                        {
+                            return;
+                        }
                 }
             }
         }

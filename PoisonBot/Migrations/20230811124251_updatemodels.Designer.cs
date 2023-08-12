@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PoisonBot;
@@ -11,9 +12,11 @@ using PoisonBot;
 namespace PoisonBot.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230811124251_updatemodels")]
+    partial class updatemodels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace PoisonBot.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("OrderStatus")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("TypeOrder")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserID")
@@ -141,11 +141,9 @@ namespace PoisonBot.Migrations
 
             modelBuilder.Entity("PoisonBot.Models.Sneakers", b =>
                 {
-                    b.HasOne("PoisonBot.Models.Delivery", "Delivery")
+                    b.HasOne("PoisonBot.Models.Delivery", null)
                         .WithMany("Sneakers")
                         .HasForeignKey("DeliveryId");
-
-                    b.Navigation("Delivery");
                 });
 
             modelBuilder.Entity("SneakersUser", b =>
