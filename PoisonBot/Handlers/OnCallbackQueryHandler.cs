@@ -41,7 +41,7 @@ namespace PoisonBot.Handlers
                 if (e.CallbackQuery.Data == "PlaceOrder")
                 {
                     var delivery = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).FirstOrDefault();
-                    if (delivery != null)
+                    if (delivery.Cost != null)
                     {
                         await DeliveryService.UserDelivery(chatId, client, e);
                     }
@@ -68,7 +68,10 @@ namespace PoisonBot.Handlers
                 {
                     await DeliveryService.DeliveryHistory(chatId, client, e);
                 }
-
+                if (e.CallbackQuery.Data == "ConfirmOrder")
+                {
+                    await DeliveryService.DeliveryClose(chatId, client, e);
+                }
             }
             catch
             {

@@ -26,7 +26,6 @@ namespace PoisonBot.Repositories
                 applicationContext.Sneakers.Add(sneakers);
                 await applicationContext.SaveChangesAsync();
                 user.Sneakers?.Add(sneakers);
-                sneakers.Users.Add(user);
                 await applicationContext.SaveChangesAsync();
             }
         }

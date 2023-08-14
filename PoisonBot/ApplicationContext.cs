@@ -25,15 +25,18 @@ namespace PoisonBot
                         .HasMany(u => u.Sneakers)
                         .WithMany(s => s.Users)
                         .UsingEntity(j => j.ToTable("UserSneakers"));
+
             modelBuilder.Entity<User>()
                         .HasMany(u => u.Deliveries)
                         .WithOne(d => d.User)
-                        .HasForeignKey(d => d.UserID);
+                        .HasForeignKey(d => d.UserID)
+                        .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Delivery>()
                         .HasOne(d => d.User)
                         .WithMany(u => u.Deliveries)
-                        .HasForeignKey(d => d.UserID);
+                        .HasForeignKey(d => d.UserID)
+                        .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Delivery>()
                         .HasMany(d => d.Sneakers)
                         .WithOne(s => s.Delivery);

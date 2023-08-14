@@ -31,13 +31,24 @@ namespace PoisonBot.Services
         {
             var message = e.CallbackQuery.Message;
             string? telegramMessage = null;
-            List<Sneakers>? sneakers = await UserRepository.GetUserCart(chatId);
-            foreach(var sneaker in sneakers)
+            List<Delivery> deliviries = await UserRepository.GetUserCart(chatId);
+            if (deliviries.Any())
             {
-                telegramMessage += $"Название заказа: {sneaker.Name}, Цена: {sneaker.Cost}, Размер: {sneaker.Size} \n";
+                foreach (var item in deliviries)
+                {
+                    foreach (var sneakers in item.Sneakers)
+                    {
+                        telegramMessage += $"Название заказа: {sneakers.Name}, Цена: {sneakers.Cost}, Размер: {sneakers.Size} \n";
+                    }
+                }
+                await client.EditMessageTextAsync(chatId, message.MessageId, telegramMessage,
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
             }
-            await client.EditMessageTextAsync(chatId, message.MessageId, telegramMessage,
-                replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
+            else
+            {
+                await client.EditMessageTextAsync(chatId, message.MessageId, "Ваша корзина пуста",
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
+            }
         }
         public static async Task PlaceUserOrder(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {

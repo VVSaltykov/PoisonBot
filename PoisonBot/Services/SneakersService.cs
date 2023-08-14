@@ -43,16 +43,17 @@ namespace PoisonBot.Services
                         currentState = 3;
                         break;
                     case 3:
-                        await SneakersRepository.AddSneakers(currentName, currentCost, currentSize, chatId);
                         var delivery = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).FirstOrDefault();
                         if (delivery != null)
                         {
-                            await DeliveryRepository.AddSneakersToDelivery(chatId);
+                            await DeliveryRepository.AddSneakersToDelivery(chatId, currentName, currentCost, currentSize);
                             await DeliveryRepository.SelectOrderTypeToDelivery(chatId);
                             return;
                         }
                         else
                         {
+                            delivery = await DeliveryRepository.AddDelivery(chatId);
+                            await DeliveryRepository.AddSneakersToDelivery(chatId, currentName, currentCost, currentSize);
                             return;
                         }
                 }

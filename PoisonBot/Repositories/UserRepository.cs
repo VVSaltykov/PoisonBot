@@ -73,13 +73,13 @@ namespace PoisonBot.Repositories
                 return user;
             }
         }
-        public static async Task<List<Sneakers>?> GetUserCart(long chatId)
+        public static async Task<List<Delivery>> GetUserCart(long chatId)
         {
             using (ApplicationContext applicationContext = new ApplicationContext())
             {
                 var user = await GetUserByChatIdAsync(chatId);
-                List<Sneakers>? sneakers = user.Sneakers.ToList();
-                return sneakers;
+                List<Delivery> deliviries = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).ToList();
+                return deliviries;
             }
         }
     }

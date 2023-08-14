@@ -73,11 +73,15 @@ namespace PoisonBot.UI
             {
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "Менеджер", callbackData: "Manager"),
+                        InlineKeyboardButton.WithUrl(text: "Менеджер", url: "https://t.me/VVSaltykov"),
                     },
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Продолжить покупки", callbackData: "NextOrder"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Подтвердить заказ", callbackData: "ConfirmOrder"),
                     },
                     new List<InlineKeyboardButton>
                     {

@@ -29,6 +29,7 @@ namespace PoisonBot.Services
             var delivery = await DeliveryRepository.GetDeliveryAsync(user);
             if (delivery != null)
             {
+                await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
                 await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован" +
                     $"Итоговая сумма получилась: {cost}\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
@@ -37,7 +38,8 @@ namespace PoisonBot.Services
             else
             {
 
-                delivery = await DeliveryRepository.AddDelivery(chatId, cost, orderType);
+                delivery = await DeliveryRepository.AddDelivery(chatId);
+                await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
                 await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован" +
                     $"Итоговая сумма получилась: {cost}\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
@@ -54,6 +56,7 @@ namespace PoisonBot.Services
             var delivery = await DeliveryRepository.GetDeliveryAsync(user);
             if (delivery != null)
             {
+                await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
                 await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован" +
                     $"Итоговая сумма получилась: {cost}\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
@@ -62,7 +65,8 @@ namespace PoisonBot.Services
             else
             {
 
-                delivery = await DeliveryRepository.AddDelivery(chatId, cost, orderType);
+                delivery = await DeliveryRepository.AddDelivery(chatId);
+                await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
                 await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован" +
                     $"Итоговая сумма получилась: {cost}\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
@@ -91,12 +95,25 @@ namespace PoisonBot.Services
                     replyMarkup: (InlineKeyboardMarkup)Buttons.DeliveryHistoryMenu());
             }
         }
-        public static async Task CreateNextOrder(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
+        public static async Task DeliveryClose(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
-            var message = e.CallbackQuery.Message;
-            var user = await UserRepository.GetUserByChatIdAsync(chatId);
-            var delivery = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).FirstOrDefault();
-            await DeliveryRepository.AddSneakersToDelivery(chatId);
+            try
+            {
+                var user = await UserRepository.GetUserByChatIdAsync(chatId);
+                using (ApplicationContext applicationContext = new ApplicationContext())
+                {
+                    var message = e.CallbackQuery.Message;
+                    var delivery = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).FirstOrDefault();
+                    delivery.OrderStatus = Definitions.OrderStatus.Compiled;
+                    applicationContext.Update(delivery);
+                    applicationContext.Update(user);
+                    await applicationContext.SaveChangesAsync();
+                    await client.EditMessageTextAsync(chatId, message.MessageId, "Мы рады, что Вы решили воспользоваться нашим сервисом! Ждем Вас снова!",
+                        replyMarkup: (InlineKeyboardMarkup)Buttons.DeliveryHistoryMenu());
+
+                }
+            }
+            catch (Exception ex) { }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace PoisonBot.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Cost { get; set; }
+        public string? Cost { get; set; }
         public int? TypeOrder { get; set; }
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Compilation;
         public int UserID { get; set; }
