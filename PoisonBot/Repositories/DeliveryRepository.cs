@@ -152,6 +152,14 @@ namespace PoisonBot.Repositories
             List<Delivery>? deliveries = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compiled).ToList();
             return deliveries;
         }
+        public static async Task<Delivery> GetDeliveryByNumber(string orderNumber)
+        {
+            using (ApplicationContext applicationContext = new ApplicationContext())
+            {
+                var delivery = await applicationContext.Deliveries.Include(d => d.Sneakers).Where(d => d.Name == orderNumber).FirstOrDefaultAsync();
+                return delivery;
+            }
+        }
         public static async Task<decimal> FirstTypeOrderFormula(long chatId)
         {
             decimal costSum = 0;

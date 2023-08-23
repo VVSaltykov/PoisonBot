@@ -12,19 +12,20 @@ namespace PoisonBot.Services
         public async static Task StartRegistrationAsync(long chatId, TelegramBotClient client,
             MessageEventArgs e, bool showButton)
         {
-            var replyMarkup = new ReplyKeyboardMarkup(new[]
-            {
-            new[]
-            {
-                new KeyboardButton("Отправить номер телефона")
-                {
-                    RequestContact = true
-                }
-            }
-            });
             if (showButton)
             {
-                await client.SendTextMessageAsync(chatId, "Добро пожаловать! Нажмите на кнопку, чтобы отправить свой номер телефона:", replyMarkup: replyMarkup);
+                var replyMarkup = new ReplyKeyboardMarkup(new[]
+                {
+                    new[]
+                    {
+                        new KeyboardButton("Отправить номер телефона")
+                        {
+                            RequestContact = true
+                        }
+                    }
+                });
+                await client.SendTextMessageAsync(chatId, "Добро пожаловать! Нажмите на кнопку, чтобы отправить свой номер телефона:",
+                    replyMarkup: replyMarkup);
             }
         }
         public async static Task UserCart(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
@@ -54,9 +55,7 @@ namespace PoisonBot.Services
         {
             var message = e.CallbackQuery.Message;
             await client.EditMessageTextAsync(chatId, message.MessageId,
-                "70 юань/кг\r\n125 юань/кг\r\nЕсли кроссы лоу версии то коробка одна весит ~1,577 кг ; " +
-                "High версия ~1,98 кг\r\n\r\n8~10% -зависит от розницы или опта , если брать от 4 позиций то комиссия 8% ," +
-                " меньше 10%\r\nС-курс цб +2% конвертации",
+                "Выберете тип доставки:",
                 replyMarkup: (InlineKeyboardMarkup)Buttons.PlaceUserOrderMenu());
         }
     }

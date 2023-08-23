@@ -9,6 +9,7 @@ namespace PoisonBot.Services
 {
     public class DeliveryService
     {
+        private static MessageEventArgs messageE;
         public static async Task UserDelivery(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
             var message = e.CallbackQuery.Message;
@@ -108,12 +109,53 @@ namespace PoisonBot.Services
                     applicationContext.Update(delivery);
                     applicationContext.Update(user);
                     await applicationContext.SaveChangesAsync();
-                    await client.EditMessageTextAsync(chatId, message.MessageId, "Мы рады, что Вы решили воспользоваться нашим сервисом! Ждем Вас снова!",
-                        replyMarkup: (InlineKeyboardMarkup)Buttons.DeliveryHistoryMenu());
+                    await client.EditMessageTextAsync(chatId, message.MessageId, "Мы рады, что Вы решили воспользоваться нашим сервисом! Ждем Вас снова!" +
+                        "Для оплаты свяжитесь с нашим менеджером!",
+                        replyMarkup: (InlineKeyboardMarkup)Buttons.ConfirmOrderMenu());
 
                 }
             }
             catch (Exception ex) { }
+        }
+        public static async Task FindOrder(long chatId, TelegramBotClient client)
+        {
+            await client.SendTextMessageAsync(chatId, $"Введите название заказа");
+            string sneakers = "";
+            var user = await UserRepository.GetUserByChatIdAsync(chatId);
+            messageE = await WaitForUserMessage(client, chatId);
+            string orderName = messageE.Message.Text;
+            var delivery = await DeliveryRepository.GetDeliveryByNumber(orderName);
+            if (delivery != null)
+            {
+                foreach (var item in delivery.Sneakers)
+                {
+                    sneakers += $"Название: {item.Name}, Размер: {item.Size}, Цена: {item.Cost}\n";
+                }
+                await client.SendTextMessageAsync(chatId, $"Название заказа {delivery.Name}\n" +
+                    $"Позиции: {sneakers}\n" +
+                    $"Итоговая стоимость: {delivery.Cost}", replyMarkup: Buttons.AdminMenu());
+            }
+            else
+            {
+                await client.SendTextMessageAsync(chatId, $"Такого заказа не существует", replyMarkup: Buttons.AdminMenu());
+            }
+        }
+        private static Task<MessageEventArgs> WaitForUserMessage(TelegramBotClient client, long chatId)
+        {
+            var tcs = new TaskCompletionSource<MessageEventArgs>();
+
+            void MessageReceived(object sender, MessageEventArgs e)
+            {
+                if (e.Message.Chat.Id == chatId)
+                {
+                    client.OnMessage -= MessageReceived;
+                    tcs.SetResult(e);
+                }
+            }
+
+            client.OnMessage += MessageReceived;
+
+            return tcs.Task;
         }
     }
 }

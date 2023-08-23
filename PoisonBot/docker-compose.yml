@@ -1,5 +1,10 @@
 ﻿version: '3.8'
 services:
+# TG Bot
+  bot:
+     image: vvsaltykov/poisonbot:latest
+     container_name: bot
+      
 # Database
   db:
     image: postgres

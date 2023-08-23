@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace PoisonBot.Handlers
 {
@@ -41,7 +42,11 @@ namespace PoisonBot.Handlers
                 else if (message.Type == MessageType.Contact)
                 {
                     await UserRepository.AddUserAsync(chatId, e.Message.Contact.PhoneNumber);
-                    await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!", replyMarkup: Buttons.StartMenu());
+                    var user = await UserRepository.GetUserByChatIdAsync(chatId);
+                    var keyboard = new ReplyKeyboardRemove();
+                    await client.SendTextMessageAsync(e.Message.Chat.Id, "Секундочку! Я получаю данные...", replyMarkup: keyboard);
+                    if (user.Role == Definitions.Role.Admin) await client.SendTextMessageAsync(message.Chat.Id, "Здарова админ!", replyMarkup: Buttons.AdminMenu());
+                    if (user.Role == Definitions.Role.User) await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!", replyMarkup: Buttons.StartMenu());
                     showButton = false;
                 }
             }

@@ -9,6 +9,28 @@ namespace PoisonBot.UI
 {
     public class Buttons
     {
+        public static IReplyMarkup Start()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Начать", callbackData: "Start"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup AdminMenu()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Найти заказ", callbackData: "FindOrder"),
+                    }
+            });
+            ;
+        }
         public static IReplyMarkup StartMenu()
         {
             return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
@@ -21,6 +43,14 @@ namespace PoisonBot.UI
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "История заказов", callbackData: "OrderHistory"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithUrl(text: "Менеджер", url: "https://t.me/tonik_uzb"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "как узнать свой размер", callbackData: "SneakersSize"),
                     },
             });
             ;
@@ -57,8 +87,8 @@ namespace PoisonBot.UI
             {
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "1 способ", callbackData: "First"),
-                        InlineKeyboardButton.WithCallbackData(text: "2 способ", callbackData: "Second"),
+                        InlineKeyboardButton.WithCallbackData(text: "Тариф стандарт", callbackData: "First"),
+                        InlineKeyboardButton.WithCallbackData(text: "Тариф ускоренный", callbackData: "Second"),
                     },
                     new List<InlineKeyboardButton>
                     {
@@ -73,15 +103,26 @@ namespace PoisonBot.UI
             {
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithUrl(text: "Менеджер", url: "https://t.me/VVSaltykov"),
-                    },
-                    new List<InlineKeyboardButton>
-                    {
                         InlineKeyboardButton.WithCallbackData(text: "Продолжить покупки", callbackData: "NextOrder"),
                     },
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Подтвердить заказ", callbackData: "ConfirmOrder"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup ConfirmOrderMenu()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithUrl(text: "Менеджер", url: "https://t.me/tonik_uzb"),
                     },
                     new List<InlineKeyboardButton>
                     {

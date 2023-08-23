@@ -31,13 +31,15 @@ namespace PoisonBot.Services
                         currentState = 1;
                         break;
                     case 1:
-                        await client.SendTextMessageAsync(chatId, "Введите стоимость кроссовок:");
+                        await client.SendTextMessageAsync(chatId, "введите стоимость позиции  в юанях 💴:");
                         e = await WaitForUserMessage(client, chatId);
                         currentCost = e.Message.Text;
                         currentState = 2;
                         break;
                     case 2:
-                        await client.SendTextMessageAsync(chatId, "Введите размер кроссовок:");
+                        await client.SendTextMessageAsync(chatId, "введите размер в формате 27,5-49,5EU ( для обуви);" +
+                            "S-XXXL(для одежды);" +
+                            "28/30-40/34(для джинс):");
                         e = await WaitForUserMessage(client, chatId);
                         currentSize = e.Message.Text;
                         currentState = 3;
