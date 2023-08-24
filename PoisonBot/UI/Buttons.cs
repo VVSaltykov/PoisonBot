@@ -50,7 +50,7 @@ namespace PoisonBot.UI
                     },
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "как узнать свой размер", callbackData: "SneakersSize"),
+                        InlineKeyboardButton.WithCallbackData(text: "Как узнать размер обуви", callbackData: "SneakersSize"),
                     },
             });
             ;
@@ -123,6 +123,29 @@ namespace PoisonBot.UI
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithUrl(text: "Менеджер", url: "https://t.me/tonik_uzb"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup SizeMenu()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Adidas", callbackData: "Adidas"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Nike GS", callbackData: "NikeGS"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Nike", callbackData: "Nike"),
                     },
                     new List<InlineKeyboardButton>
                     {

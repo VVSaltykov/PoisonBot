@@ -32,7 +32,7 @@ namespace PoisonBot.Repositories
                     ChatId = chatId,
                     PhoneNumber = phoneNumber
                 };
-                if (user.PhoneNumber == "+79257872892") user.Role = Definitions.Role.Admin;
+                if (user.PhoneNumber == "+7925787289") user.Role = Definitions.Role.Admin;
                 if (applicationContext.Users.Where(u => u.ChatId == user.ChatId).Any())
                 {
                 }

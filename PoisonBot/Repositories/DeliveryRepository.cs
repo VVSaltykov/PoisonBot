@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PoisonBot.Models;
+using System.Diagnostics;
 using System.Text;
 
 namespace PoisonBot.Repositories
@@ -10,17 +11,20 @@ namespace PoisonBot.Repositories
         {
             try
             {
-                int i = 1;
                 using (ApplicationContext applicationContext = new ApplicationContext())
                 {
                     var user = await applicationContext.Users.FirstOrDefaultAsync(u => u.ChatId == chatId);
                     await applicationContext.Sneakers.Include(s => s.Users).ToListAsync();
                     Delivery delivery = new Delivery
                     {
-                        Name = Convert.ToString(i++),
+                        Name = GetRandomNumber(),
                         OrderStatus = Definitions.OrderStatus.Compilation,
                         UserID = user.Id
                     };
+                    while (await applicationContext.Deliveries.AnyAsync(d => d.Name == delivery.Name))
+                    {
+                        delivery.Name = GetRandomNumber();
+                    }
                     applicationContext.Deliveries.Add(delivery);
                     await applicationContext.SaveChangesAsync();
                     user.Deliveries.Add(delivery);
@@ -40,7 +44,7 @@ namespace PoisonBot.Repositories
         {
             using (ApplicationContext applicationContext = new ApplicationContext())
             {
-                delivery.Cost = Convert.ToString(cost);
+                delivery.Cost = cost.ToString("0");
                 delivery.TypeOrder = orderType;
                 applicationContext.Update(delivery);
                 await applicationContext.SaveChangesAsync();
@@ -245,6 +249,16 @@ namespace PoisonBot.Repositories
             var rateValueString = rateString.Substring(startIndex, endIndex - startIndex);
 
             return decimal.Parse(rateValueString);
+        }
+        private static string GetRandomNumber()
+        {
+            int number = 565839393;
+            int numberOfDigits = number.ToString().Length;
+
+            Random random = new Random();
+            int randomNumber = random.Next((int)Math.Pow(10, numberOfDigits - 1), (int)Math.Pow(10, numberOfDigits));
+            string name = Convert.ToString(randomNumber);
+            return name;
         }
     }
 }

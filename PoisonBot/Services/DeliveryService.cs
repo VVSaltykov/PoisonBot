@@ -15,7 +15,7 @@ namespace PoisonBot.Services
             var message = e.CallbackQuery.Message;
             var user = await UserRepository.GetUserByChatIdAsync(chatId);
             var delivery = await DeliveryRepository.GetDeliveryAsync(user);
-            await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name}" +
+            await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name}\n" +
                     $"Итоговая сумма получилась: {delivery.Cost}\n" +
                     $"Тип доставки: {delivery.TypeOrder}\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
@@ -31,8 +31,8 @@ namespace PoisonBot.Services
             if (delivery != null)
             {
                 await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
-                await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован" +
-                    $"Итоговая сумма получилась: {cost}\n" +
+                await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован\n" +
+                    $"Итоговая сумма получилась: {delivery.Cost} рублей\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
                     replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
             }
@@ -41,8 +41,8 @@ namespace PoisonBot.Services
 
                 delivery = await DeliveryRepository.AddDelivery(chatId);
                 await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
-                await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован" +
-                    $"Итоговая сумма получилась: {cost}\n" +
+                await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован\n" +
+                    $"Итоговая сумма получилась: {delivery.Cost} рублей\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
                     replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
 
@@ -58,8 +58,8 @@ namespace PoisonBot.Services
             if (delivery != null)
             {
                 await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
-                await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован" +
-                    $"Итоговая сумма получилась: {cost}\n" +
+                await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован\n" +
+                    $"Итоговая сумма получилась: {delivery.Cost} рублей\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
                     replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
             }
@@ -68,8 +68,8 @@ namespace PoisonBot.Services
 
                 delivery = await DeliveryRepository.AddDelivery(chatId);
                 await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
-                await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован" +
-                    $"Итоговая сумма получилась: {cost}\n" +
+                await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован\n" +
+                    $"Итоговая сумма получилась: {delivery.Cost} рублей\n" +
                     $"Для связи с менеджером нажмите кнопку ниже!",
                     replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
 
