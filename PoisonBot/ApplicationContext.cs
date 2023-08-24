@@ -12,7 +12,7 @@ namespace PoisonBot
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=test1db;Username=postgres;Password=Xsvv2002");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=poisondb;Trusted_Connection=True");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
