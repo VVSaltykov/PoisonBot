@@ -52,6 +52,10 @@ namespace PoisonBot.UI
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Как узнать размер обуви", callbackData: "SneakersSize"),
                     },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Ссылки на нас", callbackData: "Links"),
+                    },
             });
             ;
         }
@@ -146,6 +150,33 @@ namespace PoisonBot.UI
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Nike", callbackData: "Nike"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup Links()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithUrl(text: "Менеджер", url: "https://t.me/tonik_uzb"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithUrl(text: "Телеграм паблик", url: "https://t.me/+8kAAVaaZW0Q1Y2I6"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithUrl(text: "Группа с отзывами", url: "https://t.me/+s7mxjF28GWs4NGRi"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithUrl(text: "Техническая поддержка", url: "https://t.me/VVSaltykov"),
                     },
                     new List<InlineKeyboardButton>
                     {

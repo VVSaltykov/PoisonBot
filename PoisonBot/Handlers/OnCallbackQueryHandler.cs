@@ -128,10 +128,14 @@ namespace PoisonBot.Handlers
 
                     await client.SendPhotoAsync(chatId, file, replyMarkup: Buttons.DeliveryHistoryMenu());
                 }
+                if (e.CallbackQuery.Data == "Links")
+                {
+                    await client.EditMessageTextAsync(chatId, message.MessageId, "Наши контакты", replyMarkup: (InlineKeyboardMarkup)Buttons.DeliveryHistoryMenu());
+                }
             }
             catch
             {
-                await client.SendTextMessageAsync(chatId, "Сервер перегружен");
+                await client.SendTextMessageAsync(chatId, "Сервер перегружен", replyMarkup: Buttons.DeliveryHistoryMenu());
             }
             Console.WriteLine($"Пользователь: {chatId} отправил сообщение: {callbackMessage}");
         }
