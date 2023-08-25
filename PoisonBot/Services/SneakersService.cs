@@ -33,14 +33,16 @@ namespace PoisonBot.Services
                         currentState = 1;
                         break;
                     case 1:
-                        var stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-33.jpg", FileMode.Open);
-                        var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-33.jpg");
-                        await client.SendPhotoAsync(chatId, file, "Введите стоимость позиции  в юанях 💴:\n" +
-                            "Пример: Фото где указана цена.\r\n\r\nP.S\r\nЕсли вы не зарегистрированы в приложении Poizon , вы не сможете узнать цену за каждый размер , в таком случае , после оформления заказа в боте , сообщите менеджеру , что вам нужно узнать точную цену в юанях за интересующий вас размер");
-                        e = await WaitForUserMessage(client, chatId);
-                        currentCost = e.Message.Text;
-                        currentState = 2;
-                        break;
+                        using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-33.jpg", FileMode.Open))
+                        {
+                            var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-33.jpg");
+                            await client.SendPhotoAsync(chatId, file, "Введите стоимость позиции  в юанях 💴:\n" +
+                                "Пример: Фото где указана цена.\r\n\r\nP.S\r\nЕсли вы не зарегистрированы в приложении Poizon , вы не сможете узнать цену за каждый размер , в таком случае , после оформления заказа в боте , сообщите менеджеру , что вам нужно узнать точную цену в юанях за интересующий вас размер");
+                            e = await WaitForUserMessage(client, chatId);
+                            currentCost = e.Message.Text;
+                            currentState = 2;
+                            break;
+                        }
                     case 2:
                         await client.SendTextMessageAsync(chatId, "Введите размер в формате 27,5-49,5EU ( для обуви);\n" +
                             "S-XXXL(для одежды);\n" +

@@ -37,12 +37,14 @@ namespace PoisonBot.Handlers
                 }
                 if (e.CallbackQuery.Data == "Order")
                 {
-                    var stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg", FileMode.Open);
-                    var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg");
-                    await client.SendPhotoAsync(chatId, file, "Введите полное название позиции:\n" +
-                        "Пример : New Balance NB 9060 \"rain cloud\"");
-                    await SneakersService.ChoosingSneakers(chatId, client);
-                    await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
+                    using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg", FileMode.Open))
+                    {
+                        var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg");
+                        await client.SendPhotoAsync(chatId, file, "Введите полное название позиции:\n" +
+                            "Пример : New Balance NB 9060 \"rain cloud\"");
+                        await SneakersService.ChoosingSneakers(chatId, client);
+                        await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
+                    }
                 }
                 if (e.CallbackQuery.Data == "Cart")
                 {
@@ -85,12 +87,14 @@ namespace PoisonBot.Handlers
                 }
                 if (e.CallbackQuery.Data == "NextOrder")
                 {
-                    var stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg", FileMode.Open);
-                    var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg");
-                    await client.SendPhotoAsync(chatId, file, "Введите полное название позиции:\n" +
-                        "Пример : New Balance NB 9060 \"rain cloud\"");
-                    await SneakersService.ChoosingSneakers(chatId, client);
-                    await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
+                    using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg", FileMode.Open))
+                    {
+                        var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg");
+                        await client.SendPhotoAsync(chatId, file, "Введите полное название позиции:\n" +
+                            "Пример : New Balance NB 9060 \"rain cloud\"");
+                        await SneakersService.ChoosingSneakers(chatId, client);
+                        await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
+                    }
                 }
                 if (e.CallbackQuery.Data == "OrderHistory")
                 {
@@ -102,31 +106,40 @@ namespace PoisonBot.Handlers
                 }
                 if (e.CallbackQuery.Data == "SneakersSize")
                 {
-                    var stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-07.jpg", FileMode.Open);
-                    var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-07.jpg");
+                    using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-07.jpg", FileMode.Open))
+                    {
+                        var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-07.jpg");
 
-                    await client.SendPhotoAsync(chatId, file, "Как определить размер обуви\r\nРазмер легко определить самому при помощи нехитрых измерений. Станьте на лист бумаги двумя ногами, обведите стопы карандашом, соедините расстояние от большого пальца до края пятки прямой линией. Измерьте ее сантиметровой лентой или линейкой. Затем, чтобы узнать свой российский размер, разделите длину ступни на два и снова прибавьте длину ступни. Например, вы получили при замере результат 26 сантиметров. Разделите его на два, это будет 13. И прибавьте снова 26. Получается, что ваш размер соответствует 39-му.\r\nЕсли нет желания возиться с измерениями, можно просто сравнить длину ступни с результатами готовых таблиц.", replyMarkup: Buttons.SizeMenu());
+                        await client.SendPhotoAsync(chatId, file, "Как определить размер обуви\r\nРазмер легко определить самому при помощи нехитрых измерений. Станьте на лист бумаги двумя ногами, обведите стопы карандашом, соедините расстояние от большого пальца до края пятки прямой линией. Измерьте ее сантиметровой лентой или линейкой. Затем, чтобы узнать свой российский размер, разделите длину ступни на два и снова прибавьте длину ступни. Например, вы получили при замере результат 26 сантиметров. Разделите его на два, это будет 13. И прибавьте снова 26. Получается, что ваш размер соответствует 39-му.\r\nЕсли нет желания возиться с измерениями, можно просто сравнить длину ступни с результатами готовых таблиц.", replyMarkup: Buttons.SizeMenu());
+
+                    }
                 }
                 if (e.CallbackQuery.Data == "Adidas")
                 {
-                    var stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-10.jpg", FileMode.Open);
-                    var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-10.jpg");
+                    using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-10.jpg", FileMode.Open))
+                    {
+                        var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-10.jpg");
 
-                    await client.SendPhotoAsync(chatId, file, replyMarkup: Buttons.DeliveryHistoryMenu());
+                        await client.SendPhotoAsync(chatId, file, replyMarkup: Buttons.DeliveryHistoryMenu());
+                    }
                 }
                 if (e.CallbackQuery.Data == "NikeGS")
                 {
-                    var stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-12.jpg", FileMode.Open);
-                    var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-12.jpg");
+                    using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-12.jpg", FileMode.Open))
+                    {
+                        var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-12.jpg");
 
-                    await client.SendPhotoAsync(chatId, file, replyMarkup: Buttons.DeliveryHistoryMenu());
+                        await client.SendPhotoAsync(chatId, file, replyMarkup: Buttons.DeliveryHistoryMenu());
+                    }
                 }
                 if (e.CallbackQuery.Data == "Nike")
                 {
-                    var stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-14.jpg", FileMode.Open);
-                    var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-14.jpg");
+                    using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-14.jpg", FileMode.Open))
+                    {
+                        var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-25-14.jpg");
 
-                    await client.SendPhotoAsync(chatId, file, replyMarkup: Buttons.DeliveryHistoryMenu());
+                        await client.SendPhotoAsync(chatId, file, replyMarkup: Buttons.DeliveryHistoryMenu());
+                    }
                 }
                 if (e.CallbackQuery.Data == "Links")
                 {
