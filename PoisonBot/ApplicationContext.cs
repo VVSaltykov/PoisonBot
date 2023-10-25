@@ -9,6 +9,7 @@ namespace PoisonBot
         public DbSet<User> Users { get; set; }
         public DbSet<Sneakers> Sneakers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
