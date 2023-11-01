@@ -69,6 +69,25 @@ namespace PoisonBot.UI
                     },
                     new List<InlineKeyboardButton>
                     {
+                        InlineKeyboardButton.WithCallbackData(text: "Очистить корзину", callbackData: "ClearCart"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup ClearCartMenu()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Очистить полностью", callbackData: "ClearAll"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
                         InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
                     }
             });

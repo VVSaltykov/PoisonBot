@@ -10,10 +10,9 @@ namespace PoisonBot.Repositories
 {
     public class NotificationRepository
     {
-        public static async Task AddNotification(long chatId, Delivery delivery)
+        public static async Task AddNotification(User user, Delivery delivery)
         {
             using ApplicationContext context = new ApplicationContext();
-            var user = await UserRepository.GetUserByChatIdAsync(chatId);
             Notification notification = new Notification
             {
                 DateTime = DateTime.Now,

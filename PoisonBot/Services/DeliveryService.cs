@@ -113,7 +113,6 @@ namespace PoisonBot.Services
                         "Для оплаты свяжитесь с нашим менеджером!",
                         replyMarkup: (InlineKeyboardMarkup)Buttons.ConfirmOrderMenu());
                     await NotificationService.SendNotification(chatId, client, delivery);
-
                 }
             }
             catch (Exception ex) { }
