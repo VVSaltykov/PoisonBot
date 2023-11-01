@@ -12,7 +12,7 @@ using PoisonBot;
 namespace PoisonBot.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230825065404_init")]
+    [Migration("20231101163038_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -54,6 +54,26 @@ namespace PoisonBot.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Deliveries");
+                });
+
+            modelBuilder.Entity("PoisonBot.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("PoisonBot.Models.Sneakers", b =>

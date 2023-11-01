@@ -13,7 +13,7 @@ namespace PoisonBot
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=poisondb;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer("Server=localhost;Database=poisondb; User Id=sa; Password=myStrongPassword123; TrustServerCertificate=True");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

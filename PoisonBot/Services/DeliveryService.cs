@@ -112,6 +112,7 @@ namespace PoisonBot.Services
                     await client.EditMessageTextAsync(chatId, message.MessageId, "Мы рады, что Вы решили воспользоваться нашим сервисом! Ждем Вас снова!" +
                         "Для оплаты свяжитесь с нашим менеджером!",
                         replyMarkup: (InlineKeyboardMarkup)Buttons.ConfirmOrderMenu());
+                    await NotificationService.SendNotification(chatId, client, delivery);
 
                 }
             }
