@@ -27,10 +27,15 @@ namespace PoisonBot.Repositories
         {
             using (ApplicationContext applicationContext = new ApplicationContext())
             {
+                Random random = new Random();
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                string randomString = new string(Enumerable.Repeat(chars, 5)
+                  .Select(s => s[random.Next(s.Length)]).ToArray());
                 User user = new User
                 {
                     ChatId = chatId,
-                    PhoneNumber = phoneNumber
+                    PhoneNumber = phoneNumber,
+                    PersonalPromoCode = randomString
                 };
                 if (user.PhoneNumber == "+7925787289") user.Role = Definitions.Role.Admin;
                 if (applicationContext.Users.Where(u => u.ChatId == user.ChatId).Any())
@@ -42,6 +47,23 @@ namespace PoisonBot.Repositories
                     await applicationContext.SaveChangesAsync();
                 }
             }
+        }
+        public static async Task AddPromoCode(long chatId, string promoCode)
+        {
+            using ApplicationContext applicationContext = new ApplicationContext();
+            var user = await GetUserByChatIdAsync(chatId);
+            user.InsertPromoCode = promoCode;
+            var invitingUser = await GetUserByPromoCode(promoCode);
+            invitingUser.NumberOfInvited++;
+            applicationContext.Users.Update(user);
+            applicationContext.Users.Update(invitingUser);
+            await applicationContext.SaveChangesAsync();
+        }
+        public static async Task<User> GetUserByPromoCode(string promoCode)
+        {
+            using ApplicationContext applicationContext = new ApplicationContext();
+            var user = await applicationContext.Users.FirstOrDefaultAsync(u => u.PersonalPromoCode == promoCode);
+            return user;
         }
         public static async Task<User> GetUserByChatIdAsync(long chatId)
         {

@@ -44,10 +44,21 @@ namespace PoisonBot.Handlers
                     await UserRepository.AddUserAsync(chatId, e.Message.Contact.PhoneNumber);
                     var user = await UserRepository.GetUserByChatIdAsync(chatId);
                     var keyboard = new ReplyKeyboardRemove();
-                    await client.SendTextMessageAsync(e.Message.Chat.Id, "Секундочку! Я получаю данные...", replyMarkup: keyboard);
-                    if (user.Role == Definitions.Role.Admin) await client.SendTextMessageAsync(message.Chat.Id, "Здарова админ!", replyMarkup: Buttons.AdminMenu());
-                    if (user.Role == Definitions.Role.User) await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!", replyMarkup: Buttons.StartMenu());
-                    showButton = false;
+                    await client.SendTextMessageAsync(e.Message.Chat.Id, "У Вас есть промокод? Отправьте его мне или напишите 'нет'", replyMarkup: keyboard);
+                    e = await WaitForUserMessage(client, chatId);
+                    if (e.Message.Text == "нет")
+                    {
+                        if (user.Role == Definitions.Role.Admin) await client.SendTextMessageAsync(message.Chat.Id, "Здарова админ!", replyMarkup: Buttons.AdminMenu());
+                        if (user.Role == Definitions.Role.User) await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!", replyMarkup: Buttons.StartMenu());
+                        showButton = false;
+                    }
+                    else
+                    {
+                        await UserRepository.AddPromoCode(chatId, e.Message.Text);
+                        if (user.Role == Definitions.Role.Admin) await client.SendTextMessageAsync(message.Chat.Id, "Здарова админ!", replyMarkup: Buttons.AdminMenu());
+                        if (user.Role == Definitions.Role.User) await client.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию!", replyMarkup: Buttons.StartMenu());
+                        showButton = false;
+                    }
                 }
             }
             catch
@@ -55,6 +66,23 @@ namespace PoisonBot.Handlers
                 await client.SendTextMessageAsync(chatId, "Сервер перегружен");
             }
             Console.WriteLine($"Пользователь: {chatId} отправил сообщение: {message.Text}");
+        }
+        private static Task<MessageEventArgs> WaitForUserMessage(TelegramBotClient client, long chatId)
+        {
+            var tcs = new TaskCompletionSource<MessageEventArgs>();
+
+            void MessageReceived(object sender, MessageEventArgs e)
+            {
+                if (e.Message.Chat.Id == chatId)
+                {
+                    client.OnMessage -= MessageReceived;
+                    tcs.SetResult(e);
+                }
+            }
+
+            client.OnMessage += MessageReceived;
+
+            return tcs.Task;
         }
     }
 }

@@ -56,6 +56,10 @@ namespace PoisonBot.UI
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Ссылки на нас", callbackData: "Links"),
                     },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Личный кабинет", callbackData: "PersonalAccount"),
+                    },
             });
             ;
         }
@@ -200,6 +204,17 @@ namespace PoisonBot.UI
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup NoPromoCode()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "У меня нет промокода", callbackData: "NoPromoCode"),
                     }
             });
             ;
