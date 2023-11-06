@@ -51,6 +51,10 @@ namespace PoisonBot.Services
                     replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
             }
         }
+        public async static Task ClearUserCart(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
+        {
+
+        } 
         public static async Task PlaceUserOrder(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
             var message = e.CallbackQuery.Message;
