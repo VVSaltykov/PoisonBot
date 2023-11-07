@@ -38,13 +38,21 @@ namespace PoisonBot.Services
             {
                 foreach (var item in deliveries)
                 {
-                    foreach (var sneakers in item.Sneakers)
+                    if (item.Sneakers != null && item.Sneakers.Count != 0)
                     {
-                        telegramMessage += $"Название заказа: {sneakers.Name}, Цена: {sneakers.Cost}, Размер: {sneakers.Size} \n";
+                        foreach (var sneakers in item.Sneakers)
+                        {
+                            telegramMessage += $"Название заказа: {sneakers.Name}, Цена: {sneakers.Cost}, Размер: {sneakers.Size} \n";
+                        }
+                        await client.EditMessageTextAsync(chatId, message.MessageId, telegramMessage,
+                            replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
+                    }
+                    else
+                    {
+                        await client.EditMessageTextAsync(chatId, message.MessageId, "Ваша корзина пуста",
+                            replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
                     }
                 }
-                await client.EditMessageTextAsync(chatId, message.MessageId, telegramMessage,
-                    replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
             }
             else
             {
@@ -54,7 +62,10 @@ namespace PoisonBot.Services
         }
         public async static Task ClearUserCart(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
-
+            var message = e.CallbackQuery.Message;
+            await UserRepository.ClearUserCart(chatId);
+            await client.EditMessageTextAsync(chatId, message.MessageId, "Ваша корзина очищена",
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
         } 
         public static async Task PlaceUserOrder(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {

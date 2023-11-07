@@ -51,6 +51,10 @@ namespace PoisonBot.Handlers
                 {
                     await UserService.UserCart(chatId, client, e);
                 }
+                if (e.CallbackQuery.Data == "ClearCart")
+                {
+                    await UserService.ClearUserCart(chatId, client, e);
+                }
                 if (e.CallbackQuery.Data == "PersonalAccount")
                 {
                     await UserService.PersonalAccount(chatId, client, e);

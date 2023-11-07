@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using PoisonBot.Exceptions;
 using PoisonBot.Models;
 using System;
@@ -109,8 +110,23 @@ namespace PoisonBot.Repositories
             using (ApplicationContext applicationContext = new ApplicationContext())
             {
                 var user = await GetUserByChatIdAsync(chatId);
-                List<Delivery> deliviries = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).ToList();
-                return deliviries;
+                List<Delivery> deliveries = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).ToList();
+                return deliveries;
+            }
+        }
+        public static async Task ClearUserCart(long chatId)
+        {
+            using ApplicationContext applicationContext = new ApplicationContext();
+            var user = await GetUserByChatIdAsync(chatId);
+            var delivery = await GetUserCart(chatId);
+            foreach (var item in delivery)
+            {
+                foreach (var sneaker in item.Sneakers)
+                {
+                    applicationContext.Remove(sneaker);
+                }
+                applicationContext.Update(item);
+                await applicationContext.SaveChangesAsync(); 
             }
         }
     }
