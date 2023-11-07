@@ -48,16 +48,24 @@ namespace PoisonBot.Repositories
                 }
             }
         }
-        public static async Task AddPromoCode(long chatId, string promoCode)
+        public static async Task<bool> AddPromoCode(long chatId, string promoCode)
         {
             using ApplicationContext applicationContext = new ApplicationContext();
             var user = await GetUserByChatIdAsync(chatId);
-            user.InsertPromoCode = promoCode;
             var invitingUser = await GetUserByPromoCode(promoCode);
-            invitingUser.NumberOfInvited++;
-            applicationContext.Users.Update(user);
-            applicationContext.Users.Update(invitingUser);
-            await applicationContext.SaveChangesAsync();
+            if (invitingUser  != null)
+            {
+                user.InsertPromoCode = promoCode;
+                invitingUser.NumberOfInvited++;
+                applicationContext.Users.Update(user);
+                applicationContext.Users.Update(invitingUser);
+                await applicationContext.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static async Task<User> GetUserByPromoCode(string promoCode)
         {
