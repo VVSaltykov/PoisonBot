@@ -33,10 +33,10 @@ namespace PoisonBot.Services
         {
             var message = e.CallbackQuery.Message;
             string? telegramMessage = null;
-            List<Delivery> deliviries = await UserRepository.GetUserCart(chatId);
-            if (deliviries.Any())
+            List<Delivery> deliveries = await UserRepository.GetUserCart(chatId);
+            if (deliveries.Any())
             {
-                foreach (var item in deliviries)
+                foreach (var item in deliveries)
                 {
                     foreach (var sneakers in item.Sneakers)
                     {

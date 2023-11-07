@@ -18,7 +18,10 @@ namespace PoisonBot.Services
             var user = await UserRepository.GetUserByChatIdAsync(chatId);
             await NotificationRepository.AddNotification(user, delivery);
             var admin = await applicationContext.Users.FirstOrDefaultAsync(a => a.Role == Definitions.Role.Admin);
-            await client.SendTextMessageAsync(admin.ChatId, $"Пользователь {user.PhoneNumber} сделал заказ {delivery.Name}");
+            if (admin != null)
+            {
+                await client.SendTextMessageAsync(admin.ChatId, $"Пользователь {user.PhoneNumber} сделал заказ {delivery.Name}");
+            }
         }
     }
 }

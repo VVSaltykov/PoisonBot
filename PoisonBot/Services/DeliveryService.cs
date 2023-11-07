@@ -79,6 +79,7 @@ namespace PoisonBot.Services
         {
             var message = e.CallbackQuery.Message;
             string? telegramMessage = "";
+            string? sneakersInDelivery = "";
             var user = await UserRepository.GetUserByChatIdAsync(chatId);
             List<Delivery>? deliveries = await DeliveryRepository.GetUserDeliviries(user);
             if (!deliveries.Any())
@@ -90,7 +91,12 @@ namespace PoisonBot.Services
             {
                 foreach (var item in deliveries)
                 {
-                    telegramMessage += $"Номер заказа: {item.Name}, Цена: {item.Cost} \n";
+                    foreach (var sneakers in item.Sneakers)
+                    {
+                        sneakersInDelivery += $"Название позиции: {sneakers.Name}, Цена: {sneakers.Cost}, Размер: {sneakers.Size} \n";
+                    }
+                    telegramMessage += $"Номер заказа: {item.Name}, Цена: {item.Cost} \n" +
+                        $"Товары: {sneakersInDelivery}";
                 }
                 await client.EditMessageTextAsync(chatId, message.MessageId, telegramMessage,
                     replyMarkup: (InlineKeyboardMarkup)Buttons.DeliveryHistoryMenu());
