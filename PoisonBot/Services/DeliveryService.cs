@@ -38,7 +38,6 @@ namespace PoisonBot.Services
             }
             else
             {
-
                 delivery = await DeliveryRepository.AddDelivery(chatId);
                 await DeliveryRepository.UpdateDelivery(delivery, cost, orderType);
                 await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} сформирован\n" +

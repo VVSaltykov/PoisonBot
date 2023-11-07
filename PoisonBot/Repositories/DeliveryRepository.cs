@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PoisonBot.Models;
-using System.Diagnostics;
 using System.Text;
 
 namespace PoisonBot.Repositories
@@ -89,65 +88,25 @@ namespace PoisonBot.Repositories
                     .FirstOrDefaultAsync(d => d.UserID == user.Id);
                 if (delivery.TypeOrder == 1)
                 {
-                    deliveryCost = 70;
+                    deliveryCost = 65;
                     var item = delivery.Sneakers.Last();
-                    if (item.Name.Contains("Low") || item.Name.Contains("low"))
-                    {
-                        costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
-                    }
-                    else if (item.Name.Contains("High") || item.Name.Contains("high"))
-                    {
-                        costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.98);
-                    }
-                    else
-                    {
-                        costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
-                    }
+                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
                     decimal cost = Convert.ToDecimal(delivery.Cost);
+                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(delivery);
                     cost += costSum;
-                    if (delivery.Sneakers.Count >= 4)
-                    {
-                        cost = (cost + (decimal)0.08 * cost) * GetCNY();
-                        delivery.Cost = Convert.ToString(cost);
-                        await applicationContext.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        cost = (cost + (decimal)0.1 * cost) * GetCNY();
-                        delivery.Cost = Convert.ToString(cost);
-                        await applicationContext.SaveChangesAsync();
-                    }
+                    delivery.Cost = Convert.ToString(cost);
+                    await applicationContext.SaveChangesAsync();
                 }
                 if (delivery.TypeOrder == 2)
                 {
-                    deliveryCost = 125;
+                    deliveryCost = 100;
                     var item = delivery.Sneakers.Last();
-                    if (item.Name.Contains("Low") || item.Name.Contains("low"))
-                    {
-                        costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
-                    }
-                    else if (item.Name.Contains("High") || item.Name.Contains("high"))
-                    {
-                        costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.98);
-                    }
-                    else
-                    {
-                        costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
-                    }
+                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
                     decimal cost = Convert.ToDecimal(delivery.Cost);
+                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(delivery);
                     cost += costSum;
-                    if (delivery.Sneakers.Count >= 4)
-                    {
-                        cost = (cost + (decimal)0.08 * cost) * GetCNY();
-                        delivery.Cost = Convert.ToString(cost);
-                        await applicationContext.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        cost = (cost + (decimal)0.1 * cost) * GetCNY();
-                        delivery.Cost = Convert.ToString(cost);
-                        await applicationContext.SaveChangesAsync();
-                    }
+                    delivery.Cost = Convert.ToString(cost);
+                    await applicationContext.SaveChangesAsync();
                 }
             }
         }
@@ -167,63 +126,27 @@ namespace PoisonBot.Repositories
         public static async Task<decimal> FirstTypeOrderFormula(long chatId)
         {
             decimal costSum = 0;
-            decimal deliveryCost = 70;
+            decimal deliveryCost = 65;
             var user = await UserRepository.GetUserByChatIdAsync(chatId);
             var delivery = await GetDeliveryAsync(user);
             foreach (var item in delivery.Sneakers)
             {
-                if (item.Name.Contains("Low") || item.Name.Contains("low"))
-                {
-                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
-                }
-                else if (item.Name.Contains("High") || item.Name.Contains("high"))
-                {
-                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.98);
-                }
-                else
-                {
-                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
-                }
+                costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
             }
-            if (delivery.Sneakers.Count >= 4)
-            {
-                costSum = (costSum + (decimal)0.08 * costSum) * GetCNY();
-            }
-            else
-            {
-                costSum = (costSum + (decimal)0.1 * costSum) * GetCNY();
-            }
+            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(delivery);
             return costSum;
         }
         public static async Task<decimal> SecondTypeOrderFormula(long chatId)
         {
             decimal costSum = 0;
-            decimal deliveryCost = 125;
+            decimal deliveryCost = 100;
             var user = await UserRepository.GetUserByChatIdAsync(chatId);
             var delivery = await GetDeliveryAsync(user);
             foreach (var item in delivery.Sneakers)
             {
-                if (item.Name.Contains("Low"))
-                {
-                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
-                }
-                else if (item.Name.Contains("High"))
-                {
-                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.98);
-                }
-                else
-                {
-                    costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.577);
-                }
+                costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
             }
-            if (delivery.Sneakers.Count >= 4)
-            {
-                costSum = (costSum + (decimal)0.08 * costSum) * GetCNY();
-            }
-            else
-            {
-                costSum = (costSum + (decimal)0.1 * costSum) * GetCNY();
-            }
+            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(delivery);
             return costSum;
         }
         private static decimal GetCNY()
@@ -259,6 +182,30 @@ namespace PoisonBot.Repositories
             int randomNumber = random.Next((int)Math.Pow(10, numberOfDigits - 1), (int)Math.Pow(10, numberOfDigits));
             string name = Convert.ToString(randomNumber);
             return name;
+        }
+        private static decimal GetComission(Delivery delivery)
+        {
+            int countSneakers = delivery.Sneakers.Count();
+            if (countSneakers == 1)
+            {
+                return 650;
+            }
+            else if (countSneakers == 2)
+            {
+                return -50;
+            }
+            else if (countSneakers == 3)
+            {
+                return -100;
+            }
+            else if (countSneakers == 4)
+            {
+                return -150;
+            }
+            else
+            {
+                return -200;
+            }
         }
     }
 }
