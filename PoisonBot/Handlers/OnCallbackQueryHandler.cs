@@ -115,6 +115,7 @@ namespace PoisonBot.Handlers
                         await client.SendTextMessageAsync(chatId, "Введите полное название позиции:\n" +
                             "Пример : New Balance NB 9060 \"rain cloud\"");
                         await SneakersService.ChoosingSneakers(chatId, client);
+                        await DeliveryService.UserDelivery(chatId, client);
                         //await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
                     }
                 }

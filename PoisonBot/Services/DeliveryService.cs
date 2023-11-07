@@ -16,10 +16,20 @@ namespace PoisonBot.Services
             var user = await UserRepository.GetUserByChatIdAsync(chatId);
             var delivery = await DeliveryRepository.GetDeliveryAsync(user);
             await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name}\n" +
-                    $"Итоговая сумма получилась: {delivery.Cost}\n" +
-                    $"Тип доставки: {delivery.TypeOrder}\n" +
-                    $"Для связи с менеджером нажмите кнопку ниже!",
-                    replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
+                                    $"Итоговая сумма получилась: {delivery.Cost}\n" +
+                                    $"Тип доставки: {delivery.TypeOrder}\n" +
+                                    $"Для связи с менеджером нажмите кнопку ниже!",
+                                    replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
+        }
+        public static async Task UserDelivery(long chatId, TelegramBotClient client)
+        {
+            var user = await UserRepository.GetUserByChatIdAsync(chatId);
+            var delivery = await DeliveryRepository.GetDeliveryAsync(user);
+            await client.SendTextMessageAsync(chatId, $"Заказ номер {delivery.Name}\n" +
+                                    $"Итоговая сумма получилась: {delivery.Cost}\n" +
+                                    $"Тип доставки: {delivery.TypeOrder}\n" +
+                                    $"Для связи с менеджером нажмите кнопку ниже!",
+                                    replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
         }
         public static async Task FirstTypeOrder(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
