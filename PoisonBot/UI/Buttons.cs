@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PoisonBot.Repositories;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace PoisonBot.UI
@@ -86,20 +82,31 @@ namespace PoisonBot.UI
             });
             ;
         }
-        public static IReplyMarkup ClearCartMenu()
+        public static IReplyMarkup ClearCartMenu(long chatId)
         {
-            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            var deliveries = UserRepository.GetUserCart(chatId).GetAwaiter().GetResult();
+            var buttons = new List<List<InlineKeyboardButton>>();
+
+            foreach (var deliver in deliveries)
             {
-                    new List<InlineKeyboardButton>
+                foreach (var item in deliver.Sneakers)
+                {
+                    var buttonRow = new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "Очистить полностью", callbackData: "ClearAll"),
-                    },
-                    new List<InlineKeyboardButton>
-                    {
-                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
-                    }
+                        InlineKeyboardButton.WithCallbackData(text: $"{item.Name}", callbackData: $"OrderName{item.Name}"),
+                    };
+                    buttons.Add(buttonRow);
+                }
+            }
+            buttons.Add(new List<InlineKeyboardButton>
+            {
+                InlineKeyboardButton.WithCallbackData(text: "Очистить полностью", callbackData: "ClearAll"),
             });
-            ;
+            buttons.Add(new List<InlineKeyboardButton>
+            {
+                InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+            });
+            return new InlineKeyboardMarkup(buttons);
         }
         public static IReplyMarkup DeliveryHistoryMenu()
         {

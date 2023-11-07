@@ -67,6 +67,13 @@ namespace PoisonBot.Services
             await client.EditMessageTextAsync(chatId, message.MessageId, "Ваша корзина очищена",
                     replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
         } 
+        public async static Task ClearItemInCart(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
+        {
+            var message = e.CallbackQuery.Message;
+            await UserRepository.ClearItemInCart(chatId, e.CallbackQuery.Data);
+            await client.EditMessageTextAsync(chatId, message.MessageId, "Позиция была удалена",
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
+        }
         public static async Task PlaceUserOrder(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
             var message = e.CallbackQuery.Message;

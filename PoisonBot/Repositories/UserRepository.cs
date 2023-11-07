@@ -117,7 +117,6 @@ namespace PoisonBot.Repositories
         public static async Task ClearUserCart(long chatId)
         {
             using ApplicationContext applicationContext = new ApplicationContext();
-            var user = await GetUserByChatIdAsync(chatId);
             var delivery = await GetUserCart(chatId);
             foreach (var item in delivery)
             {
@@ -127,6 +126,24 @@ namespace PoisonBot.Repositories
                 }
                 applicationContext.Update(item);
                 await applicationContext.SaveChangesAsync(); 
+            }
+        }
+        public async static Task ClearItemInCart(long chatId, string sneakersName)
+        {
+            using ApplicationContext applicationContext = new ApplicationContext();
+            var delivery = await GetUserCart(chatId);
+            sneakersName = sneakersName.Replace("OrderName", "");
+            foreach (var item in delivery)
+            {
+                foreach (var sneaker in item.Sneakers)
+                {
+                    if (sneaker.Name == sneakersName)
+                    {
+                        applicationContext.Remove(sneaker);
+                    }
+                }
+                applicationContext.Update(item);
+                await applicationContext.SaveChangesAsync();
             }
         }
     }

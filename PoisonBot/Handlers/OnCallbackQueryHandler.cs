@@ -53,6 +53,14 @@ namespace PoisonBot.Handlers
                 }
                 if (e.CallbackQuery.Data == "ClearCart")
                 {
+                    await client.SendTextMessageAsync(chatId, "Какую позицию Вы хотите удалить?", replyMarkup: Buttons.ClearCartMenu(chatId));
+                }
+                if (e.CallbackQuery.Data.Contains("OrderName"))
+                {
+                    await UserService.ClearItemInCart(chatId, client, e);
+                }
+                if (e.CallbackQuery.Data == "ClearAll")
+                {
                     await UserService.ClearUserCart(chatId, client, e);
                 }
                 if (e.CallbackQuery.Data == "PersonalAccount")
