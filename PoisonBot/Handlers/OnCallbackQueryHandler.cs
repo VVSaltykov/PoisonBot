@@ -44,7 +44,7 @@ namespace PoisonBot.Handlers
                         await client.SendTextMessageAsync(chatId, "Введите полное название позиции:\n" +
                             "Пример : New Balance NB 9060 \"rain cloud\"");
                         await SneakersService.ChoosingSneakers(chatId, client);
-                        await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
+                        //await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
                     }
                 }
                 if (e.CallbackQuery.Data == "Cart")
@@ -111,10 +111,11 @@ namespace PoisonBot.Handlers
                     using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg", FileMode.Open))
                     {
                         var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-31.jpg");
-                        await client.SendPhotoAsync(chatId, file, "Введите полное название позиции:\n" +
+                        await client.SendPhotoAsync(chatId, file);
+                        await client.SendTextMessageAsync(chatId, "Введите полное название позиции:\n" +
                             "Пример : New Balance NB 9060 \"rain cloud\"");
                         await SneakersService.ChoosingSneakers(chatId, client);
-                        await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
+                        //await client.SendTextMessageAsync(chatId, "Заказ добавлен в корзину", replyMarkup: Buttons.StartMenu());
                     }
                 }
                 if (e.CallbackQuery.Data == "OrderHistory")

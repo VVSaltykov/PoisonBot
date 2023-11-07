@@ -58,12 +58,14 @@ namespace PoisonBot.Services
                         {
                             await DeliveryRepository.AddSneakersToDelivery(chatId, currentName, currentCost, currentSize);
                             await DeliveryRepository.SelectOrderTypeToDelivery(chatId);
+                            await UserService.PlaceUserOrder(chatId, client);
                             return;
                         }
                         else
                         {
                             delivery = await DeliveryRepository.AddDelivery(chatId);
                             await DeliveryRepository.AddSneakersToDelivery(chatId, currentName, currentCost, currentSize);
+                            await UserService.PlaceUserOrder(chatId, client);
                             return;
                         }
                 }

@@ -34,15 +34,17 @@ namespace PoisonBot.UI
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Сделать заказ", callbackData: "Order"),
-                        InlineKeyboardButton.WithCallbackData(text: "Корзина", callbackData: "Cart"),
                     },
                     new List<InlineKeyboardButton>
                     {
+
+                        InlineKeyboardButton.WithCallbackData(text: "Корзина", callbackData: "Cart"),
                         InlineKeyboardButton.WithCallbackData(text: "История заказов", callbackData: "OrderHistory"),
                     },
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithUrl(text: "Менеджер", url: "https://t.me/tonik_uzb"),
+                        InlineKeyboardButton.WithCallbackData(text: "Ссылки на нас", callbackData: "Links"),
                     },
                     new List<InlineKeyboardButton>
                     {
@@ -51,10 +53,6 @@ namespace PoisonBot.UI
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Нынешний курс", callbackData: "Rate"),
-                    },
-                    new List<InlineKeyboardButton>
-                    {
-                        InlineKeyboardButton.WithCallbackData(text: "Ссылки на нас", callbackData: "Links"),
                     },
                     new List<InlineKeyboardButton>
                     {
@@ -75,6 +73,17 @@ namespace PoisonBot.UI
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Очистить корзину", callbackData: "ClearCart"),
                     },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup EmptyCartMenu()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),

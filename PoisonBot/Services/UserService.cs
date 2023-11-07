@@ -50,14 +50,14 @@ namespace PoisonBot.Services
                     else
                     {
                         await client.EditMessageTextAsync(chatId, message.MessageId, "Ваша корзина пуста",
-                            replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
+                            replyMarkup: (InlineKeyboardMarkup)Buttons.EmptyCartMenu());
                     }
                 }
             }
             else
             {
                 await client.EditMessageTextAsync(chatId, message.MessageId, "Ваша корзина пуста",
-                    replyMarkup: (InlineKeyboardMarkup)Buttons.CartMenu());
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.EmptyCartMenu());
             }
         }
         public async static Task ClearUserCart(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
@@ -78,6 +78,12 @@ namespace PoisonBot.Services
         {
             var message = e.CallbackQuery.Message;
             await client.EditMessageTextAsync(chatId, message.MessageId,
+                "Выберете тип доставки:",
+                replyMarkup: (InlineKeyboardMarkup)Buttons.PlaceUserOrderMenu());
+        }
+        public static async Task PlaceUserOrder(long chatId, TelegramBotClient client)
+        {
+            await client.SendTextMessageAsync(chatId,
                 "Выберете тип доставки:",
                 replyMarkup: (InlineKeyboardMarkup)Buttons.PlaceUserOrderMenu());
         }
