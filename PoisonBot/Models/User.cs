@@ -15,7 +15,7 @@ namespace PoisonBot.Models
         public int Id { get; set; }
         public long ChatId { get; set; }
         public string PhoneNumber { get; set; }
-        public int? NumberOfInvited { get; set; }
+        public int NumberOfInvited { get; set; } = 0;
         public string? InsertPromoCode { get; set; }
         public string PersonalPromoCode { get; set; }
         public Role Role { get; set; } = Role.User;

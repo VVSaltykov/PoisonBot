@@ -50,6 +50,10 @@ namespace PoisonBot.Handlers
                 {
                     await UserService.UserCart(chatId, client, e);
                 }
+                if (e.CallbackQuery.Data == "PersonalAccount")
+                {
+                    await UserService.PersonalAccount(chatId, client, e);
+                }
                 if (e.CallbackQuery.Data == "InMenu")
                 {
                     try

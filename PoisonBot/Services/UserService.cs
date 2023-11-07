@@ -3,6 +3,7 @@ using PoisonBot.Repositories;
 using PoisonBot.UI;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace PoisonBot.Services
@@ -61,6 +62,14 @@ namespace PoisonBot.Services
             await client.EditMessageTextAsync(chatId, message.MessageId,
                 "Выберете тип доставки:",
                 replyMarkup: (InlineKeyboardMarkup)Buttons.PlaceUserOrderMenu());
+        }
+        public static async Task PersonalAccount(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
+        {
+            var message = e.CallbackQuery.Message;
+            var user = await UserRepository.GetUserByChatIdAsync(chatId);
+            await client.EditMessageTextAsync(chatId, message.MessageId, $"Количество приглашенных пользователей: {user.NumberOfInvited} \n" +
+                $"Ваш личный промокод: {user.PersonalPromoCode}",
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
         }
     }
 }

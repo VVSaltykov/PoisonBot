@@ -47,7 +47,7 @@ namespace PoisonBot.Handlers
                     await client.SendTextMessageAsync(e.Message.Chat.Id, "У Вас есть промокод? Отправьте его мне или напишите 'нет'", replyMarkup: keyboard);
                     e = await WaitForUserMessage(client, chatId);
                     bool promocodeTrue = await UserRepository.AddPromoCode(chatId, e.Message.Text);
-                    if (promocodeTrue)
+                    if (promocodeTrue || e.Message.Text == "нет" || e.Message.Text == "Нет")
                     {
                         if (user.Role == Definitions.Role.Admin) await client.SendTextMessageAsync(message.Chat.Id, "Здарова админ!", replyMarkup: Buttons.AdminMenu());
                         if (user.Role == Definitions.Role.User) await client.SendTextMessageAsync(message.Chat.Id, "Ваш промокод активирован! Спасибо за регистрацию!", replyMarkup: Buttons.StartMenu());
