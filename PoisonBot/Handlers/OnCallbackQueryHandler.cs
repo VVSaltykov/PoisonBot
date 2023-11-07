@@ -54,6 +54,10 @@ namespace PoisonBot.Handlers
                 {
                     await UserService.PersonalAccount(chatId, client, e);
                 }
+                if (e.CallbackQuery.Data == "Rate")
+                {
+                    await RateService.GetRate(chatId, client, e);
+                }
                 if (e.CallbackQuery.Data == "InMenu")
                 {
                     try

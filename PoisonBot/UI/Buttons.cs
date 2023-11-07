@@ -54,6 +54,10 @@ namespace PoisonBot.UI
                     },
                     new List<InlineKeyboardButton>
                     {
+                        InlineKeyboardButton.WithCallbackData(text: "Нынешний курс", callbackData: "Rate"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
                         InlineKeyboardButton.WithCallbackData(text: "Ссылки на нас", callbackData: "Links"),
                     },
                     new List<InlineKeyboardButton>
