@@ -92,7 +92,7 @@ namespace PoisonBot.Repositories
                     var item = delivery.Sneakers.Last();
                     costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
                     decimal cost = Convert.ToDecimal(delivery.Cost);
-                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(delivery);
+                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user, delivery);
                     cost += costSum;
                     delivery.Cost = Convert.ToString(cost);
                     await applicationContext.SaveChangesAsync();
@@ -103,7 +103,7 @@ namespace PoisonBot.Repositories
                     var item = delivery.Sneakers.Last();
                     costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
                     decimal cost = Convert.ToDecimal(delivery.Cost);
-                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(delivery);
+                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user, delivery);
                     cost += costSum;
                     delivery.Cost = Convert.ToString(cost);
                     await applicationContext.SaveChangesAsync();
@@ -133,7 +133,7 @@ namespace PoisonBot.Repositories
             {
                 costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
             }
-            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(delivery);
+            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user,delivery);
             return costSum;
         }
         public static async Task<decimal> SecondTypeOrderFormula(long chatId)
@@ -146,7 +146,7 @@ namespace PoisonBot.Repositories
             {
                 costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
             }
-            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(delivery);
+            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user, delivery);
             return costSum;
         }
         private static decimal GetCNY()
@@ -183,28 +183,54 @@ namespace PoisonBot.Repositories
             string name = Convert.ToString(randomNumber);
             return name;
         }
-        private static decimal GetComission(Delivery delivery)
+        private static decimal GetComission(User user, Delivery delivery)
         {
             int countSneakers = delivery.Sneakers.Count();
-            if (countSneakers == 1)
+            if (user.InsertPromoCode != null)
             {
-                return 650;
-            }
-            else if (countSneakers == 2)
-            {
-                return -50;
-            }
-            else if (countSneakers == 3)
-            {
-                return -100;
-            }
-            else if (countSneakers == 4)
-            {
-                return -150;
+                if (countSneakers == 1)
+                {
+                    return 325;
+                }
+                else if (countSneakers == 2)
+                {
+                    return -25;
+                }
+                else if (countSneakers == 3)
+                {
+                    return -50;
+                }
+                else if (countSneakers == 4)
+                {
+                    return -75;
+                }
+                else
+                {
+                    return -100;
+                }
             }
             else
             {
-                return -200;
+                if (countSneakers == 1)
+                {
+                    return 650;
+                }
+                else if (countSneakers == 2)
+                {
+                    return -50;
+                }
+                else if (countSneakers == 3)
+                {
+                    return -100;
+                }
+                else if (countSneakers == 4)
+                {
+                    return -150;
+                }
+                else
+                {
+                    return -200;
+                }
             }
         }
     }

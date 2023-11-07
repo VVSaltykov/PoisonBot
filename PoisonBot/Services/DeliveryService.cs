@@ -121,6 +121,7 @@ namespace PoisonBot.Services
                     var message = e.CallbackQuery.Message;
                     var delivery = user.Deliveries.Where(d => d.OrderStatus == Definitions.OrderStatus.Compilation).FirstOrDefault();
                     delivery.OrderStatus = Definitions.OrderStatus.Compiled;
+                    if (user.InsertPromoCode != null) user.InsertPromoCode = null;
                     applicationContext.Update(delivery);
                     applicationContext.Update(user);
                     await applicationContext.SaveChangesAsync();
