@@ -171,7 +171,23 @@ namespace PoisonBot.Handlers
                 }
                 if (e.CallbackQuery.Data == "CheckSubscribe")
                 {
-                    await UserService.UserSubscribeToChannel(chatId, client);
+                    bool checkStatus = await UserRepository.UserSubscribeToChannel(chatId, client);
+                    if (checkStatus)
+                    {
+                        await UserService.StartMailing(chatId, client, e);
+                    }
+                }
+                if (e.CallbackQuery.Data == "Mailing")
+                {
+                    await UserService.UserMailing(chatId, client, e);
+                }
+                if (e.CallbackQuery.Data == "StartMailing")
+                {
+                    await UserService.StartMailing(chatId, client, e);
+                }
+                if (e.CallbackQuery.Data == "EndMailing")
+                {
+                    await UserService.EndMailing(chatId, client, e);
                 }
             }
             catch

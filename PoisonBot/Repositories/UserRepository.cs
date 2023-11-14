@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PoisonBot.Exceptions;
 using PoisonBot.Models;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot;
 
 namespace PoisonBot.Repositories
 {
@@ -42,6 +44,12 @@ namespace PoisonBot.Repositories
                     await applicationContext.SaveChangesAsync();
                 }
             }
+        }
+        public static async Task UpdateUser(User user)
+        {
+            using ApplicationContext applicationContext = new ApplicationContext();
+            applicationContext.Update(user);
+            await applicationContext.SaveChangesAsync();
         }
         public static async Task<bool> AddPromoCode(long chatId, string promoCode)
         {
@@ -138,6 +146,27 @@ namespace PoisonBot.Repositories
                 }
                 applicationContext.Update(item);
                 await applicationContext.SaveChangesAsync();
+            }
+        }
+        public async static Task<bool> UserSubscribeToChannel(long chatId, TelegramBotClient client)
+        {
+            try
+            {
+                using ApplicationContext applicationContext = new ApplicationContext();
+                var chatMember = await client.GetChatMemberAsync("@KicksVault", chatId);
+
+                if (chatMember.Status == ChatMemberStatus.Member || chatMember.Status == ChatMemberStatus.Administrator || chatMember.Status == ChatMemberStatus.Creator)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }

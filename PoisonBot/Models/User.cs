@@ -18,6 +18,7 @@ namespace PoisonBot.Models
         public int NumberOfInvited { get; set; } = 0;
         public string? InsertPromoCode { get; set; }
         public string PersonalPromoCode { get; set; }
+        public bool SubscribeStatus { get; set; } = false;
         public Role Role { get; set; } = Role.User;
         public int? DeliveryId { get; set; }
         public List<Delivery>? Deliveries { get; set; } = new List<Delivery>();

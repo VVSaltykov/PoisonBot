@@ -96,26 +96,50 @@ namespace PoisonBot.Services
                 $"Ваш личный промокод: {user.PersonalPromoCode}",
                     replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
         }
-        public async static Task UserSubscribeToChannel(long chatId, TelegramBotClient client)
+        public static async Task UserMailing(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
-            try
+            var message = e.CallbackQuery.Message;
+            var user = await UserRepository.GetUserByChatIdAsync(chatId);
+            if (user.SubscribeStatus)
             {
-                using ApplicationContext applicationContext = new ApplicationContext();
-                var chatMember = await client.GetChatMemberAsync("@KicksVault", chatId);
-
-                if (chatMember.Status == ChatMemberStatus.Member || chatMember.Status == ChatMemberStatus.Administrator || chatMember.Status == ChatMemberStatus.Creator)
-                {
-                    Console.WriteLine("Пользователь подписан на канал");
-                }
-                else
-                {
-                    Console.WriteLine("Пользователь не подписан на канал");
-                }
+                await client.EditMessageTextAsync(chatId, message.MessageId, "Вы хотите отменить рассылку?",
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.MailingMenu(user));
             }
-            catch(Exception ex)
+            else
             {
-
+                await client.EditMessageTextAsync(chatId, message.MessageId, "Вы хотите подключить рассылку из нашего телеграм канала," +
+                    "чтобы не пропускать важные новости?",
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.MailingMenu(user));
             }
+        }
+        public static async Task StartMailing(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
+        {
+            var message = e.CallbackQuery.Message;
+            var user = await UserRepository.GetUserByChatIdAsync(chatId);
+            bool subscribeStatus = await UserRepository.UserSubscribeToChannel(chatId, client);
+            if (subscribeStatus)
+            {
+                user.SubscribeStatus = true;
+                await UserRepository.UpdateUser(user);
+                await client.EditMessageTextAsync(chatId, message.MessageId, "Поздравляю! Вы подписались на рассылку" +
+                    "теперь Вы точно ничего не пропустите)",
+                        replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
+            }
+            else
+            {
+                await client.EditMessageTextAsync(chatId, message.MessageId, "Для начала необходимо подписаться на наш телеграм канал" +
+                    "https://t.me/KicksVault",
+                        replyMarkup: (InlineKeyboardMarkup)Buttons.CheckSubscribe());
+            }
+        }
+        public static async Task EndMailing(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
+        {
+            var message = e.CallbackQuery.Message;
+            var user = await UserRepository.GetUserByChatIdAsync(chatId);
+            user.SubscribeStatus = false;
+            await UserRepository.UpdateUser(user);
+            await client.EditMessageTextAsync(chatId, message.MessageId, "Жаль((((",
+                    replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
         }
     }
 }

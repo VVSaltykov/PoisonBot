@@ -1,4 +1,5 @@
-﻿using PoisonBot.Repositories;
+﻿using PoisonBot.Models;
+using PoisonBot.Repositories;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace PoisonBot.UI
@@ -60,7 +61,7 @@ namespace PoisonBot.UI
                     },
                     new List<InlineKeyboardButton>
                     {
-                        InlineKeyboardButton.WithCallbackData(text: "Подписка на канал", callbackData: "CheckSubscribe"),
+                        InlineKeyboardButton.WithCallbackData(text: "Получать рассылку", callbackData: "Mailing"),
                     },
             });
             ;
@@ -76,6 +77,51 @@ namespace PoisonBot.UI
                     new List<InlineKeyboardButton>
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Очистить корзину", callbackData: "ClearCart"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup MailingMenu(User user)
+        {
+            if (user.SubscribeStatus)
+            {
+                return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+                {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Отменить рассылку", callbackData: "EndMailing"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+                });
+                ;
+            }
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Подключить рассылку", callbackData: "StartMailing"),
+                    },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "В меню", callbackData: "InMenu"),
+                    }
+            });
+            ;
+        }
+        public static IReplyMarkup CheckSubscribe()
+        {
+            return new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
+            {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Проверить подписку", callbackData: "CheckSubscribe"),
                     },
                     new List<InlineKeyboardButton>
                     {
