@@ -1,4 +1,5 @@
-﻿using PoisonBot.Repositories;
+﻿using Microsoft.Identity.Client;
+using PoisonBot.Repositories;
 using PoisonBot.Services;
 using PoisonBot.UI;
 using Telegram.Bot;
@@ -167,6 +168,10 @@ namespace PoisonBot.Handlers
                 if (e.CallbackQuery.Data == "Links")
                 {
                     await client.EditMessageTextAsync(chatId, message.MessageId, "Наши контакты", replyMarkup: (InlineKeyboardMarkup)Buttons.DeliveryHistoryMenu());
+                }
+                if (e.CallbackQuery.Data == "CheckSubscribe")
+                {
+                    await UserService.UserSubscribeToChannel(chatId, client);
                 }
             }
             catch

@@ -58,6 +58,10 @@ namespace PoisonBot.UI
                     {
                         InlineKeyboardButton.WithCallbackData(text: "Личный кабинет", callbackData: "PersonalAccount"),
                     },
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(text: "Подписка на канал", callbackData: "CheckSubscribe"),
+                    },
             });
             ;
         }

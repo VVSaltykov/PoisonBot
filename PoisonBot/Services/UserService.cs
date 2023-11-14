@@ -4,6 +4,7 @@ using PoisonBot.UI;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace PoisonBot.Services
@@ -94,6 +95,27 @@ namespace PoisonBot.Services
             await client.EditMessageTextAsync(chatId, message.MessageId, $"Количество приглашенных пользователей: {user.NumberOfInvited} \n" +
                 $"Ваш личный промокод: {user.PersonalPromoCode}",
                     replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
+        }
+        public async static Task UserSubscribeToChannel(long chatId, TelegramBotClient client)
+        {
+            try
+            {
+                using ApplicationContext applicationContext = new ApplicationContext();
+                var chatMember = await client.GetChatMemberAsync("@KicksVault", chatId);
+
+                if (chatMember.Status == ChatMemberStatus.Member || chatMember.Status == ChatMemberStatus.Administrator || chatMember.Status == ChatMemberStatus.Creator)
+                {
+                    Console.WriteLine("Пользователь подписан на канал");
+                }
+                else
+                {
+                    Console.WriteLine("Пользователь не подписан на канал");
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
     }
 }
