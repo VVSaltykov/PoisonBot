@@ -94,7 +94,7 @@ namespace PoisonBot.Repositories
                     decimal cost = Convert.ToDecimal(delivery.Cost);
                     costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user, delivery);
                     cost += costSum;
-                    delivery.Cost = Convert.ToString(cost);
+                    delivery.Cost = cost.ToString("0");
                     await applicationContext.SaveChangesAsync();
                 }
                 if (delivery.TypeOrder == 2)
@@ -105,7 +105,7 @@ namespace PoisonBot.Repositories
                     decimal cost = Convert.ToDecimal(delivery.Cost);
                     costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user, delivery);
                     cost += costSum;
-                    delivery.Cost = Convert.ToString(cost);
+                    delivery.Cost = cost.ToString("0");
                     await applicationContext.SaveChangesAsync();
                 }
             }
