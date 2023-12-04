@@ -12,22 +12,40 @@ namespace PoisonBot.Services
         private static MessageEventArgs messageE;
         public static async Task UserDelivery(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
+            string typeOrder = "";
             var message = e.CallbackQuery.Message;
             var user = await UserRepository.GetUserByChatIdAsync(chatId);
             var delivery = await DeliveryRepository.GetDeliveryAsync(user);
+            if (delivery.TypeOrder == 1)
+            {
+                typeOrder = "Стандартная";
+            }
+            else
+            {
+                typeOrder = "Ускоренная";
+            }
             await client.EditMessageTextAsync(chatId, message.MessageId, $"Заказ номер {delivery.Name} успешно сформирован! 😊\n" +
                                     $"Итоговая сумма заказа составляет: {delivery.Cost} рублей. 💰\n" +
-                                    $"Тип доставки: {delivery.TypeOrder}\n" +
+                                    $"Тип доставки: {typeOrder}\n" +
                                     $"Если у вас возникли вопросы или вам требуется дополнительная информация, не стесняйтесь связаться с нашим менеджером. Он всегда готов помочь! 📞\r\n\r\nЧтобы связаться с менеджером, пожалуйста, нажмите на кнопку ниже. 👇\r\n\r\nСпасибо за ваш заказ! Мы ценим ваше доверие и будем рады помочь вам в любое время. 😊👍",
                                     replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
         }
         public static async Task UserDelivery(long chatId, TelegramBotClient client)
         {
+            string typeOrder = "";
             var user = await UserRepository.GetUserByChatIdAsync(chatId);
             var delivery = await DeliveryRepository.GetDeliveryAsync(user);
+            if (delivery.TypeOrder == 1)
+            {
+                typeOrder = "Стандартная";
+            }
+            else
+            {
+                typeOrder = "Ускоренная";
+            }
             await client.SendTextMessageAsync(chatId, $"Заказ номер {delivery.Name} успешно сформирован! 😊\n" +
                                     $"Итоговая сумма заказа составляет: {delivery.Cost} рублей. 💰\n" +
-                                    $"Тип доставки: {delivery.TypeOrder}\n" +
+                                    $"Тип доставки: {typeOrder}\n" +
                                     $"Если у вас возникли вопросы или вам требуется дополнительная информация, не стесняйтесь связаться с нашим менеджером. Он всегда готов помочь! 📞\r\n\r\nЧтобы связаться с менеджером, пожалуйста, нажмите на кнопку ниже. 👇\r\n\r\nСпасибо за ваш заказ! Мы ценим ваше доверие и будем рады помочь вам в любое время. 😊👍",
                                     replyMarkup: (Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup)Buttons.AfterOrderMenu());
         }

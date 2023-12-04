@@ -16,13 +16,13 @@ namespace PoisonBot.Repositories
                     await applicationContext.Sneakers.Include(s => s.Users).ToListAsync();
                     Delivery delivery = new Delivery
                     {
-                        Name = GetRandomNumber(),
+                        Name = GetRandomName(),
                         OrderStatus = Definitions.OrderStatus.Compilation,
                         UserID = user.Id
                     };
                     while (await applicationContext.Deliveries.AnyAsync(d => d.Name == delivery.Name))
                     {
-                        delivery.Name = GetRandomNumber();
+                        delivery.Name = GetRandomName();
                     }
                     applicationContext.Deliveries.Add(delivery);
                     await applicationContext.SaveChangesAsync();
@@ -173,14 +173,21 @@ namespace PoisonBot.Repositories
 
             return decimal.Parse(rateValueString);
         }
-        private static string GetRandomNumber()
+        private static string GetRandomName()
         {
-            int number = 565839393;
-            int numberOfDigits = number.ToString().Length;
+            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string numbers = "0123456789";
 
             Random random = new Random();
-            int randomNumber = random.Next((int)Math.Pow(10, numberOfDigits - 1), (int)Math.Pow(10, numberOfDigits));
-            string name = Convert.ToString(randomNumber);
+
+            string randomLetters = new string(Enumerable.Repeat(letters, 3)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            string randomNumbers = new string(Enumerable.Repeat(numbers, 3)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            string name = $"{randomLetters}-{randomNumbers}";
+
             return name;
         }
         private static decimal GetComission(User user, Delivery delivery)

@@ -1,0 +1,31 @@
+﻿version: '3.8'
+services:
+  # BOT
+  bot:
+    image: vvsaltykov/poisonbot
+    container_name: bot
+    environment:
+      - TOKEN=5771058790:AAHfGXOLGpjAKQbZ4FkTP3zlK4p5OGbGRfc
+    restart: always
+    depends_on:
+      - db
+
+  #Database
+  db:
+    image: mcr.microsoft.com/mssql/server
+    container_name: db
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=myStrongPassword123
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+
+  # Database adminer
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "5000:8080"

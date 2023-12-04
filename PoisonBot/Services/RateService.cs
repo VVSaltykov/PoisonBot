@@ -16,7 +16,7 @@ namespace PoisonBot.Services
         public static async Task GetRate(long chatId, TelegramBotClient client, CallbackQueryEventArgs e)
         {
             var message = e.CallbackQuery.Message;
-            await client.EditMessageTextAsync(chatId, message.MessageId, $"Текущий курс: {GetCNY()}",
+            await client.EditMessageTextAsync(chatId, message.MessageId, $"Текущий курс: {GetCNY() + ((decimal)0.02 * GetCNY())}",
                         replyMarkup: (InlineKeyboardMarkup)Buttons.InMenu());
         }
         private static decimal GetCNY()
