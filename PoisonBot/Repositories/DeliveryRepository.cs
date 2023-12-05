@@ -92,7 +92,7 @@ namespace PoisonBot.Repositories
                     var item = delivery.Sneakers.Last();
                     costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
                     decimal cost = Convert.ToDecimal(delivery.Cost);
-                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user, delivery);
+                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.04))) + GetComission(user, delivery);
                     cost += costSum;
                     delivery.Cost = cost.ToString("0");
                     await applicationContext.SaveChangesAsync();
@@ -103,7 +103,7 @@ namespace PoisonBot.Repositories
                     var item = delivery.Sneakers.Last();
                     costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
                     decimal cost = Convert.ToDecimal(delivery.Cost);
-                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user, delivery);
+                    costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.04))) + GetComission(user, delivery);
                     cost += costSum;
                     delivery.Cost = cost.ToString("0");
                     await applicationContext.SaveChangesAsync();
@@ -133,7 +133,9 @@ namespace PoisonBot.Repositories
             {
                 costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
             }
-            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user,delivery);
+            var cny = GetCNY() + (GetCNY() * (decimal)0.04);
+            var comission = GetComission(user, delivery);
+            costSum = (costSum * cny) + comission;
             return costSum;
         }
         public static async Task<decimal> SecondTypeOrderFormula(long chatId)
@@ -146,7 +148,7 @@ namespace PoisonBot.Repositories
             {
                 costSum += Convert.ToDecimal(item.Cost) + (deliveryCost * (decimal)1.5);
             }
-            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.15))) + GetComission(user, delivery);
+            costSum = (costSum * (GetCNY() + (GetCNY() * (decimal)0.04))) + GetComission(user, delivery);
             return costSum;
         }
         private static decimal GetCNY()

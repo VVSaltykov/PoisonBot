@@ -38,9 +38,9 @@ namespace PoisonBot.Handlers
                 }
                 if (e.CallbackQuery.Data == "Order")
                 {
-                    using (FileStream stream = new FileStream("PoisonBot/PoisonBot/Photos/photo_2023-08-24_18-35-31.jpg", FileMode.Open))
+                    using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/Photos/photo_2023-08-24_18-35-31.jpg", FileMode.Open))
                     {
-                        var file = new InputOnlineFile(stream, "PoisonBot/PoisonBot/Photos/photo_2023-08-24_18-35-31.jpg");
+                        var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/Photos/photo_2023-08-24_18-35-31.jpg");
                         await client.SendPhotoAsync(chatId, file);
                         await client.SendTextMessageAsync(chatId, "Введите полное название позиции:\n" +
                             "Пример : New Balance NB 9060 \"rain cloud\"");

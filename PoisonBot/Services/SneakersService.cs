@@ -33,9 +33,9 @@ namespace PoisonBot.Services
                         currentState = 1;
                         break;
                     case 1:
-                        using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-33.jpg", FileMode.Open))
+                        using (FileStream stream = new FileStream("C:/Users/user/source/repos/PoisonBot/PoisonBot/Photos/photo_2023-08-24_18-35-33.jpg", FileMode.Open))
                         {
-                            var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/photo_2023-08-24_18-35-33.jpg");
+                            var file = new InputOnlineFile(stream, "C:/Users/user/source/repos/PoisonBot/PoisonBot/Photos/photo_2023-08-24_18-35-33.jpg");
                             await client.SendPhotoAsync(chatId, file);
                             await client.SendTextMessageAsync(chatId, "Введите стоимость позиции  в юанях 💴:\n" +
                                 "Пример: Фото где указана цена.\r\n\r\nP.S\r\nЕсли вы не зарегистрированы в приложении Poizon , вы не сможете узнать цену за каждый размер , в таком случае , после оформления заказа в боте , сообщите менеджеру , что вам нужно узнать точную цену в юанях за интересующий вас размер");
